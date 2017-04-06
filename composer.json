@@ -1,0 +1,24 @@
+{
+    "name": "overtrue/chinese-calendar",
+    "description": "中国农历转换与查询工具",
+    "keywords": ["chinese", "calendar", "lunar", "solar", "solar2lunar", "lunar2solar"],
+    "type": "library",
+    "require": {
+        "php":">=5.5.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Overtrue\\ChineseCalendar\\": "src"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "overtrue",
+            "email": "anzhengchao@gmail.com"
+        }
+    ]
+}
