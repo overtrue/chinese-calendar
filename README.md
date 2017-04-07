@@ -1,6 +1,6 @@
 # Chinese calendar
 
-:date: 中国农历与阳历转换与查询工具
+:date: 中国农历（阴历）与阳历（公历）转换与查询工具
 
 # Installing
 
@@ -13,8 +13,8 @@ $ composer require overtrue/chinese-calendar -vvv
 ```php
 use Overtrue\ChineseCalendar\Calendar;
 
-$result = $calendar->solar(2017, 5, 5); // 公历
-$result = $calendar->lunlar(2017, 4, 10); // 公历
+$result = $calendar->solar(2017, 5, 5); // 阳历
+$result = $calendar->lunlar(2017, 4, 10); // 阴历
 
 ```
 
@@ -48,10 +48,13 @@ $result = $calendar->lunlar(2017, 4, 10); // 公历
 # Reference
 
 - [1900年至2100年公历、农历互转Js代码 - 晶晶的博客](http://blog.jjonline.cn/userInterFace/173.html) - 数据与部分算法来源
-- [农历 - 维基百科](https://zh.wikipedia.org/wiki/%E8%BE%B2%E6%9B%86)
-- [干支 - 维基百科](https://zh.wikipedia.org/wiki/%E5%B9%B2%E6%94%AF)
 - [中国历法 - 维基百科](https://zh.wikipedia.org/wiki/Category:%E4%B8%AD%E5%9B%BD%E5%8E%86%E6%B3%95)
+- [农历 - 维基百科](https://zh.wikipedia.org/wiki/%E8%BE%B2%E6%9B%86)
+- [阴历 - 维基百科](https://zh.wikipedia.org/wiki/%E9%98%B4%E5%8E%86)
+- [阳历 - 维基百科](https://zh.wikipedia.org/wiki/%E9%98%B3%E5%8E%86)
+- [干支 - 维基百科](https://zh.wikipedia.org/wiki/%E5%B9%B2%E6%94%AF)
 - [星座 - 维基百科](https://zh.wikipedia.org/wiki/%E6%98%9F%E5%BA%A7)
+- [生肖 - 维基百科](https://zh.wikipedia.org/wiki/%E7%94%9F%E8%82%96)
 
 # License
 
