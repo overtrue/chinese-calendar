@@ -459,7 +459,7 @@ class Calendar
     }
 
     /**
-     * 阳历转阳历.
+     * 阳历转阴历.
      *
      * @param int $year
      * @param int $month
@@ -581,7 +581,7 @@ class Calendar
     }
 
     /**
-     * 阳历转阳历.
+     * 阴历转阳历.
      *
      * @param int  $year
      * @param int  $month
