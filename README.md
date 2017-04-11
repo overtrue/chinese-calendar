@@ -16,7 +16,7 @@ use Overtrue\ChineseCalendar\Calendar;
 $calendar = new Calendar();
 
 $result = $calendar->solar(2017, 5, 5); // 阳历
-$result = $calendar->lunlar(2017, 4, 10); // 阴历
+$result = $calendar->lunar(2017, 4, 10); // 阴历
 
 ```
 
