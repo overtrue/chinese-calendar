@@ -647,7 +647,8 @@ class Calendar
         }
 
         // 1900 年农历正月一日的公历时间为 1900 年 1 月 30 日 0 时 0 分 0 秒 (该时间也是本农历的最开始起始点)
-        $startTimestamp = mktime(0, 0, 0, 1, 30, 1900);
+        // XXX: 部分 windows 机器不支持负时间戳，所以这里就写死了,哈哈哈哈...
+        $startTimestamp = -2206483200;
         $date = date('Y-m-d', ($offset + $day) * 86400 + $startTimestamp);
 
         list($solarYear, $solarMonth, $solarDay) = explode('-', $date);
