@@ -572,13 +572,13 @@ class Calendar
 
         return [
             'lunar_year' => $lunarYear,
-            'lunar_month' => $lunarMonth,
-            'lunar_day' => $lunarDay,
+            'lunar_month' => str_pad($lunarMonth, 2, '0', STR_PAD_LEFT),
+            'lunar_day' => str_pad($lunarDay, 2, '0', STR_PAD_LEFT),
             'lunar_month_chinese' => ($isLeap ? '闰' : '').$this->toChinaMonth($lunarMonth),
             'lunar_day_chinese' => $this->toChinaDay($lunarDay),
             'ganzhi_year' => $this->ganZhiYear($lunarYear),
-            'ganzhi_month' => $ganZhiMonth,
-            'ganzhi_day' => $ganZhiDay,
+            'ganzhi_month' => str_pad($ganZhiMonth, 2, '0', STR_PAD_LEFT),
+            'ganzhi_day' => str_pad($ganZhiDay, 2, '0', STR_PAD_LEFT),
             'animal' => $this->getAnimal($lunarYear),
             'term' => $term,
             'is_leap' => $isLeap,
