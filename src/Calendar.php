@@ -198,13 +198,13 @@ class Calendar
     {
         $date = $this->makeDate("{$year}-{$month}-{$day}");
         $lunar = $this->solar2lunar($year, $month, $day);
-        $week = abs($date->format('N')); // 1 ~ 7
+        $week = abs($date->format('w')); // 0 ~ 6 修正 星期七 为 星期日
 
         return array_merge($lunar, [
             'gregorian_year' => $year,
             'gregorian_month' => $month,
             'gregorian_day' => $day,
-            'week_no' => $week,
+            'week_no' => $week, // 在周日时将会传回 0
             'week_name' => '星期'.$this->weekdayAlias[$week],
             'is_today' => $this->makeDate('now')->diff($date)->days == 0,
             'constellation' => $this->toConstellation($month, $day),
