@@ -183,7 +183,7 @@ class Calendar
      *
      * @var array
      */
-    protected $monthAlias = ['正', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'];
+    protected $monthAlias = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'];
 
     /**
      * 传入阳历年月日获得详细的公历、农历信息.
@@ -423,7 +423,7 @@ class Calendar
             throw new InvalidArgumentException("错误的月份:{$month}");
         }
 
-        return $this->monthAlias[abs($month)].'月';
+        return $this->monthAlias[abs($month) - 1].'月';
     }
 
     /**
