@@ -54,7 +54,7 @@ class Calendar
      *
      * @var array
      */
-    protected $solarMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    protected $solarMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     /**
      * 天干地支之天干速查表.
