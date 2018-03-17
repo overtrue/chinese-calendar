@@ -207,7 +207,7 @@ class Calendar
             'gregorian_day' => $day,
             'week_no' => $week, // 在周日时将会传回 0
             'week_name' => '星期'.$this->weekdayAlias[$week],
-            'is_today' => $this->makeDate('now')->diff($date)->days == 0,
+            'is_today' => 0 === $this->makeDate('now')->diff($date)->days,
             'constellation' => $this->toConstellation($month, $day),
         ]);
     }
@@ -317,8 +317,8 @@ class Calendar
 
         $ms = $month - 1;
 
-        if ($ms == 1) { // 2 月份的闰平规律测算后确认返回 28 或 29
-            return (($year % 4 == 0) && ($year % 100 != 0) || ($year % 400 == 0)) ? 29 : 28;
+        if (1 == $ms) { // 2 月份的闰平规律测算后确认返回 28 或 29
+            return ((0 === $year % 4) && (0 !== $year % 100) || (0 === $year % 400)) ? 29 : 28;
         }
 
         return $this->solarMonth[$ms];
@@ -337,12 +337,12 @@ class Calendar
         $zhiKey = ($lunarYear - 3) % 12;
 
         // 如果余数为 0 则为最后一个天干
-        if ($ganKey == 0) {
+        if (0 === $ganKey) {
             $ganKey = 10;
         }
 
         // 如果余数为 0 则为最后一个地支
-        if ($zhiKey == 0) {
+        if (0 === $zhiKey) {
             $zhiKey = 12;
         }
 
@@ -494,12 +494,12 @@ class Calendar
         }
 
         // 年份限定、上限
-        if ($year == 1900 && $month == 1 && $day < 31) {
+        if (1900 == $year && 1 == $month && $day < 31) {
             throw new InvalidArgumentException("不支持的日期:{$year}-{$month}-{$day}");
         }
 
         // 时间参数不合法的话不计算时柱
-        if ($hour !== null && ($hour < 0 || $hour > 23)) {
+        if (null !== $hour && ($hour < 0 || $hour > 23)) {
             $hour = null;
         }
 
@@ -533,14 +533,14 @@ class Calendar
             }
 
             // 解除闰月
-            if ($isLeap == true && $i == ($leap + 1)) {
+            if (true === $isLeap && $i == ($leap + 1)) {
                 $isLeap = false;
             }
 
             $offset -= $daysOfMonth;
         }
         // offset为0时，并且刚才计算的月份是闰月，要校正
-        if ($offset == 0 && $leap > 0 && $i == $leap + 1) {
+        if (0 === $offset && $leap > 0 && $i == $leap + 1) {
             if ($isLeap) {
                 $isLeap = false;
             } else {
@@ -583,11 +583,11 @@ class Calendar
 
         // 日柱 当月一日与 1900/1/1 相差天数
         $dayCyclical = $this->dateDiff("{$year}-{$month}-01", '1900-01-01')->days + 10;
-        $dayCyclical += $day -1;
+        $dayCyclical += $day - 1;
         $ganZhiDay = $this->toGanZhi($dayCyclical);
 
         // 时柱
-        $ganZhiHour = $hour === null ? null : $this->ganZhiHour($hour, $dayCyclical);
+        $ganZhiHour = null === $hour ? null : $this->ganZhiHour($hour, $dayCyclical);
 
         return [
             'lunar_year' => $lunarYear,
@@ -626,7 +626,7 @@ class Calendar
         }
 
         // 超出了最大极限值
-        if ($year == 2100 && $month == 12 && $day > 1 || $year == 1900 && $month == 1 && $day < 31) {
+        if (2100 == $year && 12 == $month && $day > 1 || 1900 == $year && 1 == $month && $day < 31) {
             return -1;
         }
 
@@ -715,18 +715,20 @@ class Calendar
     }
 
     /**
-     * 获取时柱
+     * 获取时柱.
      *
-     * @param int $hour 0~23 小时格式
+     * @param int $hour      0~23 小时格式
      * @param int $ganZhiDay 干支日期
      *
      * @return string
+     *
      * @see https://baike.baidu.com/item/%E6%97%B6%E6%9F%B1/6274024
      */
     protected function ganZhiHour($hour, $ganZhiDay)
     {
         $hour = intval(($hour + 1) / 2);
-        $hour = $hour === 12 ? 0 : $hour;
-        return $this->gan[($ganZhiDay % 10 % 5 * 2 + $hour) % 10] . $this->zhi[$hour];
+        $hour = 12 === $hour ? 0 : $hour;
+
+        return $this->gan[($ganZhiDay % 10 % 5 * 2 + $hour) % 10].$this->zhi[$hour];
     }
 }
