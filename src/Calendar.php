@@ -68,7 +68,7 @@ class Calendar
      *
      * @var array
      */
-    protected $Zhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+    protected $zhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 
     /**
      * 天干地支之地支速查表 <=> 生肖.
@@ -191,22 +191,24 @@ class Calendar
      * @param int $year
      * @param int $month
      * @param int $day
+     * @param int $hour
      *
      * @return array
      */
-    public function solar($year, $month, $day)
+    public function solar($year, $month, $day, $hour = null)
     {
         $date = $this->makeDate("{$year}-{$month}-{$day}");
-        $lunar = $this->solar2lunar($year, $month, $day);
+        $lunar = $this->solar2lunar($year, $month, $day, $hour);
         $week = abs($date->format('w')); // 0 ~ 6 修正 星期七 为 星期日
 
         return array_merge($lunar, [
-            'gregorian_year' => $year,
-            'gregorian_month' => $month,
-            'gregorian_day' => $day,
+            'gregorian_year' => (string) $year,
+            'gregorian_month' => sprintf('%02d', $month),
+            'gregorian_day' => sprintf('%02d', $day),
+            'gregorian_hour' => !is_numeric($hour) || $hour < 0 || $hour > 23 ? null : sprintf('%02d', $hour),
             'week_no' => $week, // 在周日时将会传回 0
             'week_name' => '星期'.$this->weekdayAlias[$week],
-            'is_today' => $this->makeDate('now')->diff($date)->days == 0,
+            'is_today' => 0 === $this->makeDate('now')->diff($date)->days,
             'constellation' => $this->toConstellation($month, $day),
         ]);
     }
@@ -223,14 +225,15 @@ class Calendar
      * @param int  $month       lunar month
      * @param int  $day         lunar day
      * @param bool $isLeapMonth lunar month is leap or not.[如果是农历闰月第四个参数赋值true即可]
+     * @param int  $hour        birth hour.[0~23]
      *
      * @return array
      */
-    public function lunar($year, $month, $day, $isLeapMonth = false)
+    public function lunar($year, $month, $day, $isLeapMonth = false, $hour = null)
     {
         $solar = $this->lunar2solar($year, $month, $day, $isLeapMonth);
 
-        return $this->solar($solar['solar_year'], $solar['solar_month'], $solar['solar_day']);
+        return $this->solar($solar['solar_year'], $solar['solar_month'], $solar['solar_day'], $hour);
     }
 
     /**
@@ -295,7 +298,7 @@ class Calendar
             return -1;
         }
 
-        return  ($this->lunars[$year - 1900] & (0x10000 >> $month)) ? 30 : 29;
+        return ($this->lunars[$year - 1900] & (0x10000 >> $month)) ? 30 : 29;
     }
 
     /**
@@ -315,8 +318,8 @@ class Calendar
 
         $ms = $month - 1;
 
-        if ($ms == 1) { // 2 月份的闰平规律测算后确认返回 28 或 29
-            return (($year % 4 == 0) && ($year % 100 != 0) || ($year % 400 == 0)) ? 29 : 28;
+        if (1 == $ms) { // 2 月份的闰平规律测算后确认返回 28 或 29
+            return ((0 === $year % 4) && (0 !== $year % 100) || (0 === $year % 400)) ? 29 : 28;
         }
 
         return $this->solarMonth[$ms];
@@ -327,7 +330,7 @@ class Calendar
      *
      * @param int $lunarYear
      *
-     * @return mixed
+     * @return string
      */
     public function ganZhiYear($lunarYear)
     {
@@ -335,16 +338,16 @@ class Calendar
         $zhiKey = ($lunarYear - 3) % 12;
 
         // 如果余数为 0 则为最后一个天干
-        if ($ganKey == 0) {
+        if (0 === $ganKey) {
             $ganKey = 10;
         }
 
         // 如果余数为 0 则为最后一个地支
-        if ($zhiKey == 0) {
+        if (0 === $zhiKey) {
             $zhiKey = 12;
         }
 
-        return $this->gan[$ganKey - 1].$this->Zhi[$zhiKey - 1];
+        return $this->gan[$ganKey - 1].$this->zhi[$zhiKey - 1];
     }
 
     /**
@@ -360,7 +363,12 @@ class Calendar
         $constellations = '魔羯水瓶双鱼白羊金牛双子巨蟹狮子处女天秤天蝎射手魔羯';
         $arr = [20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22];
 
-        return mb_substr($constellations, $gregorianMonth * 2 - ($gregorianDay < $arr[$gregorianMonth - 1] ? 2 : 0), 2, 'UTF-8');
+        return mb_substr(
+            $constellations,
+            $gregorianMonth * 2 - ($gregorianDay < $arr[$gregorianMonth - 1] ? 2 : 0),
+            2,
+            'UTF-8'
+        );
     }
 
     /**
@@ -372,7 +380,7 @@ class Calendar
      */
     public function toGanZhi($offset)
     {
-        return $this->gan[$offset % 10].$this->Zhi[$offset % 12];
+        return $this->gan[$offset % 10].$this->zhi[$offset % 12];
     }
 
     /**
@@ -403,10 +411,24 @@ class Calendar
             2 => [3, 1],
             3 => [4, 2],
         ];
-        $group = floor(($no - 1) / 4);
+        $group = intval(($no - 1) / 4);
         list($offset, $length) = $positions[($no - 1) % 4];
 
         return substr($solarTermsOfYear[$group], $offset, $length);
+    }
+
+    public function toChinaYear($year)
+    {
+        if (!is_numeric($year)) {
+            throw new InvalidArgumentException("错误的年份:{$year}");
+        }
+        $lunarYear = '';
+        $year = (string) $year;
+        for ($i = 0, $l = strlen($year); $i < $l; ++$i) {
+            $lunarYear .= '0' !== $year[$i] ? $this->weekdayAlias[$year[$i]] : '零';
+        }
+
+        return $lunarYear;
     }
 
     /**
@@ -431,7 +453,7 @@ class Calendar
      *
      * @param int $day
      *
-     * @return mixed|string
+     * @return string
      */
     public function toChinaDay($day)
     {
@@ -440,25 +462,21 @@ class Calendar
                 return '初十';
             case 20:
                 return '二十';
-
-                break;
             case 30:
                 return '三十';
-
-                break;
             default:
-                return $this->dateAlias[floor($day / 10)].$this->weekdayAlias[$day % 10];
+                return $this->dateAlias[intval($day / 10)].$this->weekdayAlias[$day % 10];
         }
     }
 
     /**
      * 年份转生肖.
-
+     *
      * 仅能大致转换, 精确划分生肖分界线是 “立春”.
      *
      * @param int $year
      *
-     * @return mixed
+     * @return string
      */
     public function getAnimal($year)
     {
@@ -471,10 +489,11 @@ class Calendar
      * @param int $year
      * @param int $month
      * @param int $day
+     * @param int $hour
      *
      * @return array
      */
-    public function solar2lunar($year, $month, $day)
+    public function solar2lunar($year, $month, $day, $hour = null)
     {
         $date = $this->makeDate("{$year}-{$month}-{$day}");
 
@@ -486,7 +505,7 @@ class Calendar
         }
 
         // 年份限定、上限
-        if ($year == 1900 && $month == 1 && $day < 31) {
+        if (1900 == $year && 1 == $month && $day < 31) {
             throw new InvalidArgumentException("不支持的日期:{$year}-{$month}-{$day}");
         }
 
@@ -520,14 +539,14 @@ class Calendar
             }
 
             // 解除闰月
-            if ($isLeap == true && $i == ($leap + 1)) {
+            if (true === $isLeap && $i == ($leap + 1)) {
                 $isLeap = false;
             }
 
             $offset -= $daysOfMonth;
         }
         // offset为0时，并且刚才计算的月份是闰月，要校正
-        if ($offset == 0 && $leap > 0 && $i == $leap + 1) {
+        if (0 === $offset && $leap > 0 && $i == $leap + 1) {
             if ($isLeap) {
                 $isLeap = false;
             } else {
@@ -570,17 +589,25 @@ class Calendar
 
         // 日柱 当月一日与 1900/1/1 相差天数
         $dayCyclical = $this->dateDiff("{$year}-{$month}-01", '1900-01-01')->days + 10;
-        $ganZhiDay = $this->toGanZhi($dayCyclical + $day - 1);
+        $dayCyclical += $day - 1;
+        $ganZhiDay = $this->toGanZhi($dayCyclical);
+
+        // 时柱和时辰
+        list($ganZhiHour, $lunarHour, $hour) = $this->ganZhiHour($hour, $dayCyclical);
 
         return [
-            'lunar_year' => $lunarYear,
-            'lunar_month' => str_pad($lunarMonth, 2, '0', STR_PAD_LEFT),
-            'lunar_day' => str_pad($lunarDay, 2, '0', STR_PAD_LEFT),
+            'lunar_year' => (string) $lunarYear,
+            'lunar_month' => sprintf('%02d', $lunarMonth),
+            'lunar_day' => sprintf('%02d', $lunarDay),
+            'lunar_hour' => $hour,
+            'lunar_year_chinese' => $this->toChinaYear($lunarYear),
             'lunar_month_chinese' => ($isLeap ? '闰' : '').$this->toChinaMonth($lunarMonth),
             'lunar_day_chinese' => $this->toChinaDay($lunarDay),
+            'lunar_hour_chinese' => $lunarHour,
             'ganzhi_year' => $this->ganZhiYear($lunarYear),
-            'ganzhi_month' => str_pad($ganZhiMonth, 2, '0', STR_PAD_LEFT),
-            'ganzhi_day' => str_pad($ganZhiDay, 2, '0', STR_PAD_LEFT),
+            'ganzhi_month' => $ganZhiMonth,
+            'ganzhi_day' => $ganZhiDay,
+            'ganzhi_hour' => $ganZhiHour,
             'animal' => $this->getAnimal($lunarYear),
             'term' => $term,
             'is_leap' => $isLeap,
@@ -608,7 +635,7 @@ class Calendar
         }
 
         // 超出了最大极限值
-        if ($year == 2100 && $month == 12 && $day > 1 || $year == 1900 && $month == 1 && $day < 31) {
+        if (2100 == $year && 12 == $month && $day > 1 || 1900 == $year && 1 == $month && $day < 31) {
             return -1;
         }
 
@@ -657,8 +684,8 @@ class Calendar
 
         return [
             'solar_year' => $solarYear,
-            'solar_month' => $solarMonth,
-            'solar_day' => $solarDay,
+            'solar_month' => sprintf('%02d', $solarMonth),
+            'solar_day' => sprintf('%02d', $solarDay),
         ];
     }
 
@@ -694,5 +721,31 @@ class Calendar
     protected function makeDate($string = 'now', $timezone = 'PRC')
     {
         return new DateTime($string, new DateTimeZone($timezone));
+    }
+
+    /**
+     * 获取时柱.
+     *
+     * @param int $hour      0~23 小时格式
+     * @param int $ganZhiDay 干支日期
+     *
+     * @return array
+     *
+     * @see https://baike.baidu.com/item/%E6%97%B6%E6%9F%B1/6274024
+     */
+    protected function ganZhiHour($hour, $ganZhiDay)
+    {
+        if (!is_numeric($hour) || $hour < 0 || $hour > 23) {
+            return [null, null, null];
+        }
+
+        $zhiHour = intval(($hour + 1) / 2);
+        $zhiHour = 12 === $zhiHour ? 0 : $zhiHour;
+
+        return [
+            $this->gan[($ganZhiDay % 10 % 5 * 2 + $zhiHour) % 10].$this->zhi[$zhiHour],
+            $this->zhi[$zhiHour].'时',
+            sprintf('%02d', $hour),
+        ];
     }
 }
