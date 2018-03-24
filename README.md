@@ -17,33 +17,67 @@ $calendar = new Calendar();
 
 $result = $calendar->solar(2017, 5, 5); // 阳历
 $result = $calendar->lunar(2017, 4, 10); // 阴历
+$result = $calendar->solar(2017, 5, 5, 23) // 阳历，带 $hour 参数
 
 ```
 
 结果：
 
+```php
+array(
+    'lunar_year': '2017',                // 农历年
+    'lunar_month': '04',                 // 农历月
+    'lunar_day': '10',                   // 农历日
+    'lunar_hour': NULL,                  // 农历时
+    'lunar_year_chinese': '二零一七',    // (汉字)农历年
+    'lunar_month_chinese': '四月',       // (汉字)农历月
+    'lunar_day_chinese': '初十',         // (汉字)农历日
+    'lunar_hour_chinese': NULL,          // (汉字)农历时辰
+    'ganzhi_year': '丁酉',               // (干支)年柱
+    'ganzhi_month': '乙巳',              // (干支)月柱
+    'ganzhi_day': '壬辰',                // (干支)日柱
+    'ganzhi_hour': NULL,                 // (干支)时柱
+    'animal': '鸡',                      // 生肖
+    'term': '立夏',                      // 节气
+    'is_leap': false,                    // 是否为闰月
+    'gregorian_year': '2017',            // 公历年
+    'gregorian_month': '05',             // 公历月
+    'gregorian_day': '05',               // 公历日
+    'gregorian_hour': NULL,              // 公历时
+    'week_no': 5,                        // (数字)星期几
+    'week_name': '星期五',               // (汉字)星期几
+    'is_today': false,                   // 是否为今天
+    'constellation': '金牛'              // 星座
+);
+
+array (
+  'lunar_year' => '2017',
+  'lunar_month' => '04',
+  'lunar_day' => '11',
+  'lunar_hour' => '23',                  // 农历时
+  'lunar_year_chinese' => '二零一七',
+  'lunar_month_chinese' => '四月',
+  'lunar_day_chinese' => '十一',
+  'lunar_hour_chinese' => '子时',        // (汉字)农历时辰
+  'ganzhi_year' => '丁酉',
+  'ganzhi_month' => '乙巳',
+  'ganzhi_day' => '癸巳',
+  'ganzhi_hour' => '壬子',               // (干支)日柱
+  'animal' => '鸡',
+  'term' => NULL,
+  'is_leap' => false,
+  'gregorian_year' => '2017',
+  'gregorian_month' => '05',
+  'gregorian_day' => '05',
+  'gregorian_hour' => '23',              // 公历时
+  'week_no' => 5,
+  'week_name' => '星期五',
+  'is_today' => false,
+  'constellation' => '金牛',
+);
 ```
-{
-    "lunar_year": 2017,                 // 农历年
-    "lunar_month": 4,                   // 农历月
-    "lunar_day": 10,                    // 农历日
-    "lunar_month_chinese": "四月",       // (汉字)农历月
-    "lunar_day_chinese": "初十",         // (汉字)农历日  
-    "ganzhi_year": "丁酉",               // (干支)年
-    "ganzhi_month": "乙巳",              // (干支)月
-    "ganzhi_day": "壬辰",                // (干支)日
-    "animal": "鸡",                      // 生肖
-    "term": "立夏",                      // 节气
-    "is_leap": false,                    // 是否为闰月
-    "gregorian_year": 2017,              // 公历年
-    "gregorian_month": 5,                // 公历月
-    "gregorian_day": 5,                  // 公历日
-    "week_no": 5,                        // (数字)星期几
-    "week_name": "星期五",                // (汉字)星期几
-    "is_today": false,                   // 是否为今天
-    "constellation": "金牛"               // 星座
-}
-```
+
+> 你可能注意到，含时间的农历结果怎么是 `四月十一` 而不是 `四月初十`，具体见 #13
 
 更多 API 请查看源码。
 
