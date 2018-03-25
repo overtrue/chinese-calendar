@@ -495,6 +495,10 @@ class Calendar
      */
     public function solar2lunar($year, $month, $day, $hour = null)
     {
+        if (23 == $hour) {
+            // 23点过后算子时，农历以子时为一天的起始
+            $day += 1;
+        }
         $date = $this->makeDate("{$year}-{$month}-{$day}");
 
         list($year, $month, $day) = explode('-', $date->format('Y-n-j'));
