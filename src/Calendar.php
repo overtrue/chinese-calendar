@@ -199,6 +199,11 @@ class Calendar
      */
     protected $monthAlias = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'];
 
+    public function __construct()
+    {
+        date_default_timezone_set('PRC');
+    }
+
     /**
      * 传入阳历年月日获得详细的公历、农历信息.
      *
@@ -209,8 +214,11 @@ class Calendar
      *
      * @return array
      */
-    public function solar($year, $month, $day, $hour = null)
+    public function solar($year = NULL, $month = NULL, $day = NULL, $hour = null)
     {
+        $year = $year === NULL ? date('Y') : $year;
+        $month = $month === NULL ? date('n') : $month;
+        $day = $day === NULL ? date('d') : $day;
         $date = $this->makeDate("{$year}-{$month}-{$day}");
         $lunar = $this->solar2lunar($year, $month, $day, $hour);
         $week = abs($date->format('w')); // 0 ~ 6 修正 星期七 为 星期日
@@ -225,11 +233,6 @@ class Calendar
             'is_today' => 0 === $this->makeDate('now')->diff($date)->days,
             'constellation' => $this->toConstellation($month, $day),
         ]);
-    }
-
-    public function __construct()
-    {
-        date_default_timezone_set('PRC');
     }
 
     /**
@@ -526,13 +529,13 @@ class Calendar
             return null;
         }
 
-        $gan = substr($ganZhi, 2);
+        $gan = mb_substr($ganZhi, 0, 1);
 
         if (!$gan) {
             return null;
         }
 
-        return $this->colors[array_search($this->gan, $gan)];
+        return $this->colors[array_search($gan, $this->gan)];
     }
 
     /**
@@ -548,13 +551,13 @@ class Calendar
             return null;
         }
 
-        $gan = substr($ganZhi, 2);
+        $gan = mb_substr($ganZhi, 0, 1);
 
         if (!$gan) {
             return null;
         }
 
-        return $this->wuXing[array_search($this->gan, $gan)];
+        return $this->wuXing[array_search($gan, $this->gan)];
     }
 
     /**
@@ -567,8 +570,11 @@ class Calendar
      *
      * @return array
      */
-    public function solar2lunar($year, $month, $day, $hour = null)
+    public function solar2lunar($year = NULL, $month = NULL, $day = NULL, $hour = null)
     {
+        $year = $year === NULL ? date('Y') : $year;
+        $month = $month === NULL ? date('n') : $month;
+        $day = $day === NULL ? date('d') : $day;
         if (23 == $hour) {
             // 23点过后算子时，农历以子时为一天的起始
             $day += 1;
