@@ -214,11 +214,11 @@ class Calendar
      *
      * @return array
      */
-    public function solar($year = NULL, $month = NULL, $day = NULL, $hour = null)
+    public function solar($year = null, $month = null, $day = null, $hour = null)
     {
-        $year = $year === NULL ? date('Y') : $year;
-        $month = $month === NULL ? date('n') : $month;
-        $day = $day === NULL ? date('d') : $day;
+        $year = $year === null ? date('Y') : $year;
+        $month = $month === null ? date('n') : $month;
+        $day = $day === null ? date('d') : $day;
         $date = $this->makeDate("{$year}-{$month}-{$day}");
         $lunar = $this->solar2lunar($year, $month, $day, $hour);
         $week = abs($date->format('w')); // 0 ~ 6 修正 星期七 为 星期日
@@ -570,11 +570,11 @@ class Calendar
      *
      * @return array
      */
-    public function solar2lunar($year = NULL, $month = NULL, $day = NULL, $hour = null)
+    public function solar2lunar($year = null, $month = null, $day = null, $hour = null)
     {
-        $year = $year === NULL ? date('Y') : $year;
-        $month = $month === NULL ? date('n') : $month;
-        $day = $day === NULL ? date('d') : $day;
+        $year = $year === null ? date('Y') : $year;
+        $month = $month === null ? date('n') : $month;
+        $day = $day === null ? date('d') : $day;
         if (23 == $hour) {
             // 23点过后算子时，农历以子时为一天的起始
             $day += 1;
