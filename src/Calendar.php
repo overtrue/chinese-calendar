@@ -227,11 +227,6 @@ class Calendar
         ]);
     }
 
-    public function __construct()
-    {
-        date_default_timezone_set('PRC');
-    }
-
     /**
      * 传入农历年月日以及传入的月份是否闰月获得详细的公历、农历信息.
      *
