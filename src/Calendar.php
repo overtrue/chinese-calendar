@@ -527,7 +527,7 @@ class Calendar
             return null;
         }
 
-        return $this->colors[array_search($this->gan, $gan)];
+        return $this->colors[array_search($gan, $this->gan)];
     }
 
     /**
@@ -549,7 +549,7 @@ class Calendar
             return null;
         }
 
-        return $this->wuXing[array_search($this->gan, $gan)];
+        return $this->wuXing[array_search($gan, $this->gan)];
     }
 
     /**
@@ -659,7 +659,8 @@ class Calendar
         if ($secondNode == $day) {
             $termIndex = $month * 2 - 1;
         }
-        $term = $this->solarTerm[$termIndex];
+
+        $term = null != $termIndex ? $this->solarTerm[$termIndex] : null;
 
         // 日柱 当月一日与 1900/1/1 相差天数
         $dayCyclical = $this->dateDiff("{$year}-{$month}-01", '1900-01-01')->days + 10;
