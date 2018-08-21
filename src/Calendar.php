@@ -796,6 +796,203 @@ class Calendar
     }
 
     /**
+     * 增加年数
+     *
+     * @param array $lunar
+     * @param int   $value
+     * @param bool  $overFlow
+     *
+     * @return array
+     */
+    public function addYears($lunar, $value = 1, $overFlow = true)
+    {
+        $newYear = $lunar['lunar_year'] + $value;
+        $newMonth = $lunar['lunar_month'];
+        $newDay = $lunar['lunar_day'];
+        $isLeap = $lunar['is_leap'];
+        $needOverFlow = false;
+
+        $leapMonth = $this->leapMonth($newYear);
+        $isLeap = $isLeap && $newMonth == $leapMonth;
+        $maxDays = $isLeap ? $this->leapDays($newYear) : $this->lunarDays($newYear, $newMonth);
+
+        if ($newDay > $maxDays) {
+            if ($overFlow) {
+                $newDay = 1;
+                $needOverFlow = true;
+            } else {
+                $newDay = $maxDays;
+            }
+        }
+        $ret = $this->lunar($newYear, $newMonth, $newDay, $isLeap);
+        if ($needOverFlow) {
+            $ret = $this->addMonths($ret, 1, $overFlow);
+        }
+
+        return $ret;
+    }
+
+    /**
+     * 减少年数
+     *
+     * @param array $lunar
+     * @param int   $value
+     * @param bool  $overFlow
+     *
+     * @return array
+     */
+    public function subYears($lunar, $value = 1, $overFlow = true)
+    {
+        return $this->addYears($lunar, -1 * $value, $overFlow);
+    }
+
+    /**
+     * 增加月数
+     *
+     * @param array $lunar
+     * @param int   $value
+     * @param bool  $overFlow
+     *
+     * @return array
+     */
+    public function addMonths($lunar, $value = 1, $overFlow = true)
+    {
+        if (0 > $value) {
+            return $this->subMonths($lunar, -1 * $value, $overFlow);
+        } else {
+            $newYear = $lunar['lunar_year'];
+            $newMonth = $lunar['lunar_month'];
+            $newDay = $lunar['lunar_day'];
+            $isLeap = $lunar['is_leap'];
+
+            while (0 < $value) {
+                $leapMonth = $this->leapMonth($newYear);
+                if (0 < $leapMonth) {
+                    $currentIsLeap = $isLeap;
+                    $isLeap = $newMonth + $value == $leapMonth + ($isLeap ? 0 : 1);
+
+                    if ((!$currentIsLeap && $leapMonth == $newMonth) || ($newMonth < $leapMonth && $newMonth + $value > $leapMonth)) {
+                        $value--;
+                    }
+                } else {
+                    $isLeap = false;
+                }
+
+                if (13 > $newMonth + $value) {
+                    $newMonth += $value;
+                    $value = 0;
+                } else {
+                    $value = $value + $newMonth - 13;
+                    $newYear++;
+                    $newMonth = 1;
+                }
+
+                if (0 == $value) {
+                    $maxDays = $isLeap ? $this->leapDays($newYear) : $this->lunarDays($newYear, $newMonth);
+                    if ($newDay > $maxDays) {
+                        if ($overFlow) {
+                            $newDay = 1;
+                            $value++;
+                        } else {
+                            $newDay = $maxDays;
+                        }
+                    }
+                }
+            }
+
+            return $this->lunar($newYear, $newMonth, $newDay, $isLeap);
+        }
+    }
+
+    /**
+     * 减少月数
+     *
+     * @param array $lunar
+     * @param int   $value
+     * @param bool  $overFlow
+     *
+     * @return array
+     */
+    public function subMonths($lunar, $value = 1, $overFlow = true)
+    {
+        if (0 > $value) {
+            return $this->addMonths($lunar, -1 * $value, $overFlow);
+        } else {
+            $newYear = $lunar['lunar_year'];
+            $newMonth = $lunar['lunar_month'];
+            $newDay = $lunar['lunar_day'];
+            $isLeap = $lunar['is_leap'];
+            $needOverFlow = false;
+
+            while (0 < $value) {
+                $leapMonth = $this->leapMonth($newYear);
+
+                if (0 < $leapMonth) {
+                    $isLeap = $newMonth - $value == $leapMonth;
+
+                    if ($newMonth >= $leapMonth && $newMonth - $value < $leapMonth) {
+                        $value--;
+                    }
+                } else {
+                    $isLeap = false;
+                }
+
+                if ($newMonth > $value) {
+                    $newMonth -= $value;
+                    $value = 0;
+                } else {
+                    $value = $value - $newMonth;
+                    $newYear--;
+                    $newMonth = 12;
+                }
+
+                if (0 == $value) {
+                    $maxDays = $isLeap ? $this->leapDays($newYear) : $this->lunarDays($newYear, $newMonth);
+                    if ($newDay > $maxDays) {
+                        $newDay = $maxDays;
+                        $needOverFlow = $overFlow;
+                    }
+                }
+            }
+
+            $ret = $this->lunar($newYear, $newMonth, $newDay, $isLeap);
+            if ($needOverFlow) {
+                $ret = $this->addDays($ret, 1);
+            }
+            return $ret;
+        }
+    }
+
+    /**
+     * 增加天数
+     *
+     * @param array $lunar
+     * @param int   $value
+     *
+     * @return array
+     */
+    public function addDays($lunar, $value = 1)
+    {
+        $solar = $this->lunar2solar($lunar['lunar_year'], $lunar['lunar_month'], $lunar['lunar_day'], $lunar['is_leap']);
+        $date = $this->makeDate("{$solar['solar_year']}-{$solar['solar_month']}-{$solar['solar_day']}");
+        $date->modify($value . ' day');
+        return $this->solar2lunar($date->format('Y'), $date->format('m'), $date->format('d'));
+    }
+
+    /**
+     * 减少天数
+     *
+     * @param array $lunar
+     * @param int   $value
+     *
+     * @return array
+     */
+    public function subDays($lunar, $value = 1)
+    {
+        return $this->addDays($lunar, -1 * $value);
+    }
+
+    /**
      * 创建日期对象
      *
      * @param string $string
