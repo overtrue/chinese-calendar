@@ -796,6 +796,44 @@ class Calendar
     }
 
     /**
+     * 获取两个日期之间以年为单位的距离.
+     * @param array $lunar1
+     * @param array $lunar2
+     * @param bool $absolute
+     * @return int
+     */
+    public function diffInYears($lunar1, $lunar2, $absolute = false)
+    {
+        $solar1 = $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
+        $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
+
+        $solar2 = $this->lunar2solar($lunar2['lunar_year'], $lunar2['lunar_month'], $lunar2['lunar_day'], $lunar2['is_leap']);
+        $date2 = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
+
+        if ($date1 < $date2) {
+            $lessLunar = $lunar1;
+            $greaterLunar = $lunar2;
+            $changed = false;
+        } else {
+            $lessLunar = $lunar2;
+            $greaterLunar = $lunar1;
+            $changed = true;
+        }
+
+        $monthAdjustFactor = $greaterLunar['lunar_day'] >= $lessLunar['lunar_day'] ? 0 : 1;
+        if ($greaterLunar['lunar_month'] == $lessLunar['lunar_month']) {
+            if ($greaterLunar['is_leap'] && !$lessLunar['is_leap']) {
+                $monthAdjustFactor = 0;
+            } else if (!$greaterLunar['is_leap'] && $lessLunar['is_leap']) {
+                $monthAdjustFactor = 1;
+            }
+        }
+        $yearAdjustFactor = $greaterLunar['lunar_month'] - $monthAdjustFactor >= $lessLunar['lunar_month'] ? 0 : 1;
+        $diff = $greaterLunar['lunar_year'] - $yearAdjustFactor - $lessLunar['lunar_year'];
+        return $absolute ? $diff : ($changed ? -1 * $diff : $diff);
+    }
+
+    /**
      * 增加年数
      *
      * @param array $lunar

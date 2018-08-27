@@ -12,6 +12,525 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarTest extends TestCase
 {
+    #region diffInYears
+
+    public function testSameNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 29, false);
+        $lunar2 = $calendar->lunar(2017, 6, 29, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $this->assertEquals(0, $diff1);
+        $this->assertEquals(0, $diff2);
+    }
+
+    public function testSameLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 30, true);
+        $lunar2 = $calendar->lunar(2017, 6, 30, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $this->assertEquals(0, $diff1);
+        $this->assertEquals(0, $diff2);
+    }
+
+    #region less month
+
+    public function testLessMonthLessDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 8, 20, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+
+    public function testLessMonthLessDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2007, 5, 10, false);
+        $lunar2 = $calendar->lunar(2017, 6, 20, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testLessMonthLessDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 7, 20, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testLessMonthLessDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2052, 8, 20, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(35, $diff1);
+        $this->assertEquals(-35, $diff2);
+        $this->assertEquals(35, $diff2a);
+    }
+
+    public function testLessMonthEqualDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 8, 10, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+
+    public function testLessMonthEqualDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2007, 5, 10, false);
+        $lunar2 = $calendar->lunar(2017, 6, 10, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testLessMonthEqualDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 7, 10, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testLessMonthEqualDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2052, 8, 10, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(35, $diff1);
+        $this->assertEquals(-35, $diff2);
+        $this->assertEquals(35, $diff2a);
+    }
+
+    public function testLessMonthGreaterDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 8, 1, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+
+    public function testLessMonthGreaterDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2007, 5, 10, false);
+        $lunar2 = $calendar->lunar(2017, 6, 1, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testLessMonthGreaterDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 7, 1, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testLessMonthGreaterDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2052, 8, 1, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(35, $diff1);
+        $this->assertEquals(-35, $diff2);
+        $this->assertEquals(35, $diff2a);
+    }
+
+    #endregion less month
+
+    #region equal month
+
+    public function testEqualMonthLessDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 6, 20, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+
+    public function testEqualMonthLessDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2007, 6, 10, false);
+        $lunar2 = $calendar->lunar(2017, 6, 20, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testEqualMonthLessDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 6, 20, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testEqualMonthLessDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2025, 6, 20, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(8, $diff1);
+        $this->assertEquals(-8, $diff2);
+        $this->assertEquals(8, $diff2a);
+    }
+
+
+    public function testEqualMonthEqualDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 6, 10, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+
+    public function testEqualMonthEqualDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2007, 6, 10, false);
+        $lunar2 = $calendar->lunar(2017, 6, 10, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testEqualMonthEqualDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 6, 10, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testEqualMonthEqualDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2025, 6, 10, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(8, $diff1);
+        $this->assertEquals(-8, $diff2);
+        $this->assertEquals(8, $diff2a);
+    }
+
+
+    public function testEqualMonthGreaterDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 6, 1, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+
+    public function testEqualMonthGreaterDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2007, 6, 10, false);
+        $lunar2 = $calendar->lunar(2017, 6, 1, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(10, $diff1);
+        $this->assertEquals(-10, $diff2);
+        $this->assertEquals(10, $diff2a);
+    }
+
+    public function testEqualMonthGreaterDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 6, 1, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testEqualMonthGreaterDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2025, 6, 1, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(7, $diff1);
+        $this->assertEquals(-7, $diff2);
+        $this->assertEquals(7, $diff2a);
+    }
+
+    #endregion equal month
+
+    #region greater month
+
+    public function testGreaterMonthLessDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 5, 20, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+
+    public function testGreaterMonthLessDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 5, 20, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testGreaterMonthLessDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 5, 20, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testGreaterMonthLessDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2020, 4, 20, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(2, $diff1);
+        $this->assertEquals(-2, $diff2);
+        $this->assertEquals(2, $diff2a);
+    }
+
+
+    public function testGreaterMonthEqualDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 5, 10, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+
+    public function testGreaterMonthEqualDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 5, 10, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testGreaterMonthEqualDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 5, 10, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testGreaterMonthEqualDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2020, 4, 10, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(2, $diff1);
+        $this->assertEquals(-2, $diff2);
+        $this->assertEquals(2, $diff2a);
+    }
+
+
+    public function testGreaterMonthGreaterDayNormalDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 5, 1, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+
+    public function testGreaterMonthGreaterDayNormalDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, false);
+        $lunar2 = $calendar->lunar(2027, 5, 1, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testGreaterMonthGreaterDayLeapDateAndNormalDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2027, 5, 1, false);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(9, $diff1);
+        $this->assertEquals(-9, $diff2);
+        $this->assertEquals(9, $diff2a);
+    }
+
+    public function testGreaterMonthGreaterDayLeapDateAndLeapDateDiffInYears()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2017, 6, 10, true);
+        $lunar2 = $calendar->lunar(2020, 4, 1, true);
+        $diff1 = $calendar->diffInYears($lunar1, $lunar2);
+        $diff2 = $calendar->diffInYears($lunar2, $lunar1);
+        $diff2a = $calendar->diffInYears($lunar2, $lunar1, true);
+        $this->assertEquals(2, $diff1);
+        $this->assertEquals(-2, $diff2);
+        $this->assertEquals(2, $diff2a);
+    }
+
+    #endregion greater month
+
+    #endregion diffInYears
+
     #region addYears
 
     public function testLastDayOfLeapMonthOverFlowAddYears()
