@@ -4507,6 +4507,25 @@ class CalendarTest extends TestCase
 
     #endregion diffInMonths
 
+    #region diffInDays
+
+    public function testDiffInDays()
+    {
+        $calendar = new Calendar();
+        $lunar1 = $calendar->lunar(2018, 7, 18, false);
+        $lunar2 = $calendar->lunar(2044, 7, 18, true);
+        $diff1 = $calendar->diffInDays($lunar1, $lunar2);
+        $diff1a = $calendar->diffInDays($lunar1, $lunar2, true);
+        $diff2 = $calendar->diffInDays($lunar2, $lunar1);
+        $diff2a = $calendar->diffInDays($lunar2, $lunar1, true);
+        $this->assertEquals(9509, $diff1);
+        $this->assertEquals(9509, $diff1a);
+        $this->assertEquals(-9509, $diff2);
+        $this->assertEquals(9509, $diff2a);
+    }
+
+    #endregion diffInDays
+
     #region addYears
 
     public function testLastDayOfLeapMonthOverFlowAddYears()

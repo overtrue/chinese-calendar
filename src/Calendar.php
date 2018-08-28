@@ -897,6 +897,24 @@ class Calendar
     }
 
     /**
+     * 获取两个日期之间以日为单位的距离.
+     * @param array $lunar1
+     * @param array $lunar2
+     * @param bool $absolute
+     * @return int
+     */
+    public function diffInDays($lunar1, $lunar2, $absolute = false)
+    {
+        $solar1 = $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
+        $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
+
+        $solar2 = $this->lunar2solar($lunar2['lunar_year'], $lunar2['lunar_month'], $lunar2['lunar_day'], $lunar2['is_leap']);
+        $date2 = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
+
+        return $date1->diff($date2, $absolute)->format('%r%a');
+    }
+
+    /**
      * 增加年数
      *
      * @param array $lunar
