@@ -2,7 +2,7 @@
 /**
  * User: hao.li
  * Date: 2018/8/21
- * Time: 8:54 AM
+ * Time: 8:54 AM.
  */
 
 namespace Overtrue\ChineseCalendar\Tests;
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarTest extends TestCase
 {
-    #region diffInYears
+    //region diffInYears
 
     public function testSameNormalDateDiffInYears()
     {
@@ -36,7 +36,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2);
     }
 
-    #region less month
+    //region less month
 
     public function testLessMonthLessDayNormalDateAndNormalDateDiffInYears()
     {
@@ -50,7 +50,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(-10, $diff2);
         $this->assertEquals(10, $diff2a);
     }
-
 
     public function testLessMonthLessDayNormalDateAndLeapDateDiffInYears()
     {
@@ -104,7 +103,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-
     public function testLessMonthEqualDayNormalDateAndLeapDateDiffInYears()
     {
         $calendar = new Calendar();
@@ -157,7 +155,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-
     public function testLessMonthGreaterDayNormalDateAndLeapDateDiffInYears()
     {
         $calendar = new Calendar();
@@ -197,9 +194,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(35, $diff2a);
     }
 
-    #endregion less month
+    //endregion less month
 
-    #region equal month
+    //region equal month
 
     public function testEqualMonthLessDayNormalDateAndNormalDateDiffInYears()
     {
@@ -213,7 +210,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(-10, $diff2);
         $this->assertEquals(10, $diff2a);
     }
-
 
     public function testEqualMonthLessDayNormalDateAndLeapDateDiffInYears()
     {
@@ -254,7 +250,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(8, $diff2a);
     }
 
-
     public function testEqualMonthEqualDayNormalDateAndNormalDateDiffInYears()
     {
         $calendar = new Calendar();
@@ -267,7 +262,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(-10, $diff2);
         $this->assertEquals(10, $diff2a);
     }
-
 
     public function testEqualMonthEqualDayNormalDateAndLeapDateDiffInYears()
     {
@@ -308,7 +302,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(8, $diff2a);
     }
 
-
     public function testEqualMonthGreaterDayNormalDateAndNormalDateDiffInYears()
     {
         $calendar = new Calendar();
@@ -321,7 +314,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(-9, $diff2);
         $this->assertEquals(9, $diff2a);
     }
-
 
     public function testEqualMonthGreaterDayNormalDateAndLeapDateDiffInYears()
     {
@@ -362,9 +354,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(7, $diff2a);
     }
 
-    #endregion equal month
+    //endregion equal month
 
-    #region greater month
+    //region greater month
 
     public function testGreaterMonthLessDayNormalDateAndNormalDateDiffInYears()
     {
@@ -378,7 +370,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(-9, $diff2);
         $this->assertEquals(9, $diff2a);
     }
-
 
     public function testGreaterMonthLessDayNormalDateAndLeapDateDiffInYears()
     {
@@ -419,7 +410,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-
     public function testGreaterMonthEqualDayNormalDateAndNormalDateDiffInYears()
     {
         $calendar = new Calendar();
@@ -432,7 +422,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(-9, $diff2);
         $this->assertEquals(9, $diff2a);
     }
-
 
     public function testGreaterMonthEqualDayNormalDateAndLeapDateDiffInYears()
     {
@@ -473,7 +462,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-
     public function testGreaterMonthGreaterDayNormalDateAndNormalDateDiffInYears()
     {
         $calendar = new Calendar();
@@ -486,7 +474,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(-9, $diff2);
         $this->assertEquals(9, $diff2a);
     }
-
 
     public function testGreaterMonthGreaterDayNormalDateAndLeapDateDiffInYears()
     {
@@ -527,13 +514,13 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    #endregion greater month
+    //endregion greater month
 
-    #endregion diffInYears
+    //endregion diffInYears
 
-    #region diffInMonths
+    //region diffInMonths
 
-    #region different year less month less day
+    //region different year less month less day
 
     public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -910,9 +897,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    #endregion different year less month less day
+    //endregion different year less month less day
 
-    #region different year less month equal day
+    //region different year less month equal day
 
     public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -1289,9 +1276,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    #endregion different year less month equal day
+    //endregion different year less month equal day
 
-    #region different year less month greater day
+    //region different year less month greater day
 
     public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -1668,9 +1655,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    #endregion different year less month greater day
+    //endregion different year less month greater day
 
-    #region different year equal month less day
+    //region different year equal month less day
 
     public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -2047,9 +2034,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    #endregion different year equal month less day
+    //endregion different year equal month less day
 
-    #region different year equal month equal day
+    //region different year equal month equal day
 
     public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -2426,9 +2413,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    #endregion different year equal month equal day
+    //endregion different year equal month equal day
 
-    #region different year equal month greater day
+    //region different year equal month greater day
 
     public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -2805,9 +2792,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(98, $diff2a);
     }
 
-    #endregion different year equal month greater day
+    //endregion different year equal month greater day
 
-    #region different year greater month less day
+    //region different year greater month less day
 
     public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -3184,9 +3171,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(70, $diff2a);
     }
 
-    #endregion different year greater month less day
+    //endregion different year greater month less day
 
-    #region different year greater month equal day
+    //region different year greater month equal day
 
     public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -3563,9 +3550,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(70, $diff2a);
     }
 
-    #endregion different year greater month equal day
+    //endregion different year greater month equal day
 
-    #region different year greater month greater day
+    //region different year greater month greater day
 
     public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
     {
@@ -3942,9 +3929,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(69, $diff2a);
     }
 
-    #endregion different year greater month greater day
+    //endregion different year greater month greater day
 
-    #region same year less month less day
+    //region same year less month less day
 
     public function testSameYearLessMonthLessDayNormalYearNormalDateAndNormalDateDiffInMonths()
     {
@@ -4066,10 +4053,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    #endregion same year less month less day
+    //endregion same year less month less day
 
-    #region same year less month equal day
-
+    //region same year less month equal day
 
     public function testSameYearLessMonthEqualDayNormalYearNormalDateAndNormalDateDiffInMonths()
     {
@@ -4191,9 +4177,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    #endregion same year less month equal day
+    //endregion same year less month equal day
 
-    #region same year less month greater day
+    //region same year less month greater day
 
     public function testSameYearLessMonthGreaterDayNormalYearNormalDateAndNormalDateDiffInMonths()
     {
@@ -4315,9 +4301,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    #endregion same year less month greater day
+    //endregion same year less month greater day
 
-    #region same year equal month less day
+    //region same year equal month less day
 
     public function testSameYearEqualMonthLessDayNormalYearNormalDateAndNormalDateDiffInMonths()
     {
@@ -4409,9 +4395,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    #endregion same year equal month less day
+    //endregion same year equal month less day
 
-    #region same year equal month equal day
+    //region same year equal month equal day
 
     public function testSameYearEqualMonthEqualDayNormalYearNormalDateAndNormalDateDiffInMonths()
     {
@@ -4503,11 +4489,11 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    #endregion same year equal month equal day
+    //endregion same year equal month equal day
 
-    #endregion diffInMonths
+    //endregion diffInMonths
 
-    #region diffInDays
+    //region diffInDays
 
     public function testDiffInDays()
     {
@@ -4524,9 +4510,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(9509, $diff2a);
     }
 
-    #endregion diffInDays
+    //endregion diffInDays
 
-    #region addYears
+    //region addYears
 
     public function testLastDayOfLeapMonthOverFlowAddYears()
     {
@@ -4594,9 +4580,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    #endregion addYears
+    //endregion addYears
 
-    #region subYears
+    //region subYears
 
     public function testLastDayOfLeapMonthOverFlowSubYears()
     {
@@ -4642,7 +4628,6 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-
     public function testLeapMonthSubYearsToLeapMonth()
     {
         $calendar = new Calendar();
@@ -4654,9 +4639,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(true, $newLunar['is_leap']);
     }
 
-    #endregion subYears
+    //endregion subYears
 
-    #region addMonths
+    //region addMonths
 
     public function testAddMonthsLesserThanLeapMonth()
     {
@@ -4768,9 +4753,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    #endregion addMonths
+    //endregion addMonths
 
-    #region subMonths
+    //region subMonths
 
     public function testSubMonthsGreaterThanLeapMonth()
     {
@@ -4860,9 +4845,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    #endregion subMonths
+    //endregion subMonths
 
-    #region addDays
+    //region addDays
 
     public function testAddDaysOverYears()
     {
@@ -4875,9 +4860,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(true, $newLunar['is_leap']);
     }
 
-    #endregion addDays
+    //endregion addDays
 
-    #region subDays
+    //region subDays
 
     public function testSubDaysOverYears()
     {
@@ -4890,5 +4875,5 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    #endregion subDays
+    //endregion subDays
 }
