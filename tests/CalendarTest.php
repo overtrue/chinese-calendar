@@ -4910,4 +4910,22 @@ class CalendarTest extends TestCase
     }
 
     #endregion subDays
+
+    #region getAnimal
+
+    public function testMouseGetAnimal()
+    {
+        $calendar = new Calendar();
+        $animal = $calendar->getAnimal(1984);
+        $this->assertEquals('鼠', $animal);
+    }
+
+    public function testPigGetAnimal()
+    {
+        $calendar = new Calendar();
+        $animal = $calendar->getAnimal(1983);
+        $this->assertEquals('猪', $animal);
+    }
+
+    #endregion getAnimal
 }

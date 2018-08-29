@@ -502,12 +502,10 @@ class Calendar
      */
     public function getAnimal($year, $termIndex = null)
     {
-        $animalIndex = ($year - 4) % 12;
-        if (null !== $termIndex) {
-            if (3 > $termIndex) {
-                $animalIndex += 1;
-            }
-        }
+        // 认为此逻辑不需要，详情参见 ganZhiYear 相关注释
+        $adjust = null !== $termIndex && 3 > $termIndex ? 1 : 0;
+
+        $animalIndex = ($year + $adjust - 4) % 12;
 
         return $this->animals[$animalIndex];
     }
