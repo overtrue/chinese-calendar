@@ -358,7 +358,7 @@ class Calendar
     {
         /**
          * 据维基百科干支词条：『在西历新年后，华夏新年或干支历新年之前，则续用上一年之干支』
-         * 所以干支年份应该不需要根据节气校正，未免影响现有系统，此处暂时保留原有逻辑
+         * 所以干支年份应该不需要根据节气校正，为免影响现有系统，此处暂时保留原有逻辑
          * https://zh.wikipedia.org/wiki/%E5%B9%B2%E6%94%AF
          *
          * 即使考虑节气，有的年份没有立春，有的年份有两个立春，此处逻辑仍不能处理该特殊情况
@@ -806,7 +806,7 @@ class Calendar
      * @param bool $absolute
      * @return int
      */
-    public function diffInYears($lunar1, $lunar2, $absolute = false)
+    public function diffInYears($lunar1, $lunar2, $absolute = true)
     {
         $solar1 = $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
         $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
@@ -844,7 +844,7 @@ class Calendar
      * @param bool $absolute
      * @return int
      */
-    public function diffInMonths($lunar1, $lunar2, $absolute = false)
+    public function diffInMonths($lunar1, $lunar2, $absolute = true)
     {
         $solar1 = $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
         $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
@@ -895,7 +895,7 @@ class Calendar
      * @param bool $absolute
      * @return int
      */
-    public function diffInDays($lunar1, $lunar2, $absolute = false)
+    public function diffInDays($lunar1, $lunar2, $absolute = true)
     {
         $solar1 = $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
         $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
