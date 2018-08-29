@@ -12,8 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarTest extends TestCase
 {
-
-    #region ganZhiYear
+    //region ganZhiYear
 
     public function testJiaZiGanZhiYear()
     {
@@ -29,8 +28,7 @@ class CalendarTest extends TestCase
         $this->assertEquals('癸亥', $ganZhi);
     }
 
-    #endregion ganZhiYear
-
+    //endregion ganZhiYear
 
     public function testSameNormalDateDiffInYears()
     {
@@ -4893,9 +4891,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    #endregion subDays
+    //endregion subDays
 
-    #region getAnimal
+    //region getAnimal
 
     public function testMouseGetAnimal()
     {
