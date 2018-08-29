@@ -356,27 +356,19 @@ class Calendar
      */
     public function ganZhiYear($lunarYear, $termIndex = null)
     {
-        $ganKey = ($lunarYear - 3) % 10;
-        $zhiKey = ($lunarYear - 3) % 12;
+        /**
+         * 据维基百科干支词条：『在西历新年后，华夏新年或干支历新年之前，则续用上一年之干支』
+         * 所以干支年份应该不需要根据节气校正，未免影响现有系统，此处暂时保留原有逻辑
+         * https://zh.wikipedia.org/wiki/%E5%B9%B2%E6%94%AF
+         *
+         * 即使考虑节气，有的年份没有立春，有的年份有两个立春，此处逻辑仍不能处理该特殊情况
+         */
+        $adjust = null !== $termIndex && 3 > $termIndex ? 1 : 0;
 
-        // 如果余数为 0 则为最后一个天干
-        if (0 === $ganKey) {
-            $ganKey = 10;
-        }
+        $ganKey = ($lunarYear + $adjust - 4) % 10;
+        $zhiKey = ($lunarYear + $adjust - 4) % 12;
 
-        // 如果余数为 0 则为最后一个地支
-        if (0 === $zhiKey) {
-            $zhiKey = 12;
-        }
-
-        if (null !== $termIndex) {
-            if (3 > $termIndex) {
-                $ganKey += 1;
-                $zhiKey += 1;
-            }
-        }
-
-        return $this->gan[$ganKey - 1].$this->zhi[$zhiKey - 1];
+        return $this->gan[$ganKey].$this->zhi[$zhiKey];
     }
 
     /**

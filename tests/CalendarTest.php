@@ -12,6 +12,25 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarTest extends TestCase
 {
+
+    #region ganZhiYear
+
+    public function testJiaZiGanZhiYear()
+    {
+        $calendar = new Calendar();
+        $ganZhi = $calendar->ganZhiYear(1984);
+        $this->assertEquals('甲子', $ganZhi);
+    }
+
+    public function testKuiHaiGanZhiYear()
+    {
+        $calendar = new Calendar();
+        $ganZhi = $calendar->ganZhiYear(1983);
+        $this->assertEquals('癸亥', $ganZhi);
+    }
+
+    #endregion ganZhiYear
+
     #region diffInYears
 
     public function testSameNormalDateDiffInYears()
