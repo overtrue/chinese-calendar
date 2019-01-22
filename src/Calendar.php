@@ -57,35 +57,42 @@ class Calendar
     protected $solarMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     /**
-     * 天干地支之天干速查表.
+     * 天干
      *
      * @var array
      */
     protected $gan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
 
     /**
-     * 天干地支之天干速查表 <=> 色彩.
+     * 天干 <=> 色彩.
      *
      * @var array
      */
     protected $colors = ['青', '青', '红', '红', '黄', '黄', '白', '白', '黑', '黑'];
 
     /**
-     * 天干地支之天干速查表 <=> 五行.
+     * 天干 <=> 五行.
      *
      * @var array
      */
     protected $wuXing = ['木', '木', '火', '火', '土', '土', '金', '金', '水', '水'];
 
     /**
-     * 天干地支之地支速查表.
+     * 地支
      *
      * @var array
      */
     protected $zhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 
     /**
-     * 天干地支之地支速查表 <=> 生肖.
+     * 地支 <=> 五行
+     *
+     * @var array
+     */
+    protected $wuXingZhi = ['水', '土', '木', '木', '土', '火', '火', '土', '金', '金', '土', '水'];
+
+    /**
+     * 地支 <=> 生肖.
      *
      * @var array
      */
@@ -539,19 +546,14 @@ class Calendar
      *
      * @return string
      */
-    protected function getWuXing($ganZhi)
-    {
-        if (!$ganZhi) {
-            return null;
-        }
+    protected function getWuXing($ganZhi): string {
+        if ( mb_strlen($ganZhi) <= 0 ) return '';
 
-        $gan = substr($ganZhi, 2);
-
-        if (!$gan) {
-            return null;
-        }
-
-        return $this->wuXing[array_search($gan, $this->gan)];
+        $gan    = mb_substr($ganZhi, 0, 1);
+        $wuXing = $this->wuXing[array_search($gan, $this->gan)];
+        $zhi    = mb_substr($ganZhi, -1);
+        $wuXing .= $this->wuXingZhi[array_search($zhi, $this->zhi)];
+        return $wuXing;
     }
 
     /**
