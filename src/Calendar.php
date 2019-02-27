@@ -523,7 +523,7 @@ class Calendar
             return null;
         }
 
-        $gan = substr($ganZhi, 2);
+        $gan = substr($ganZhi, 0, 3);
 
         if (!$gan) {
             return null;
@@ -545,7 +545,7 @@ class Calendar
             return null;
         }
 
-        $gan = substr($ganZhi, 2);
+        $gan = substr($ganZhi, 0, 3);
 
         if (!$gan) {
             return null;
