@@ -78,6 +78,12 @@ class Calendar
     protected $wuXing = ['木', '木', '火', '火', '土', '土', '金', '金', '水', '水'];
 
     /**
+     * 地支 <=> 五行
+     * @var array
+     */
+    protected $zhiWuxing = ['水', '土', '木', '木', '土', '火', '火', '土', '金', '金', '土', '水'];
+
+    /**
      * 天干地支之地支速查表.
      *
      * @var array
@@ -546,12 +552,16 @@ class Calendar
         }
 
         $gan = substr($ganZhi, 0, 3);
+        $zhi = substr($ganZhi, 3);
 
-        if (!$gan) {
+        if (!$gan || !$zhi) {
             return null;
         }
 
-        return $this->wuXing[array_search($gan, $this->gan)];
+        $wGan = $this->wuXing[array_search($gan, $this->gan)];
+        $wZhi = $this->zhiWuxing[array_search($zhi, $this->zhi)];
+
+        return $wGan . $wZhi;
     }
 
     /**
