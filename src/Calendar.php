@@ -78,7 +78,8 @@ class Calendar
     protected $wuXing = ['木', '木', '火', '火', '土', '土', '金', '金', '水', '水'];
 
     /**
-     * 地支 <=> 五行
+     * 地支 <=> 五行.
+     *
      * @var array
      */
     protected $zhiWuxing = ['水', '土', '木', '木', '土', '火', '火', '土', '金', '金', '土', '水'];
@@ -561,7 +562,7 @@ class Calendar
         $wGan = $this->wuXing[array_search($gan, $this->gan)];
         $wZhi = $this->zhiWuxing[array_search($zhi, $this->zhi)];
 
-        return $wGan . $wZhi;
+        return $wGan.$wZhi;
     }
 
     /**
