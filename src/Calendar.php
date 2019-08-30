@@ -654,8 +654,8 @@ class Calendar
         $lunarDay = $offset + 1;
 
         // 月柱 1900 年 1 月小寒以前为 丙子月(60进制12)
-        $firstNode = $this->getTerm($lunarYear, ($month * 2 - 1)); // 返回当月「节气」为几日开始
-        $secondNode = $this->getTerm($lunarYear, ($month * 2)); // 返回当月「节气」为几日开始
+        $firstNode = $this->getTerm($year, ($month * 2 - 1)); // 返回当月「节气」为几日开始
+        $secondNode = $this->getTerm($year, ($month * 2)); // 返回当月「节气」为几日开始
 
         // 依据 12 节气修正干支月
         $ganZhiMonth = $this->toGanZhi(($year - 1900) * 12 + $month + 11);
@@ -674,7 +674,7 @@ class Calendar
             $termIndex = $month * 2 - 1;
         }
 
-        $term = null != $termIndex ? $this->solarTerm[$termIndex] : null;
+        $term = null !== $termIndex ? $this->solarTerm[$termIndex] : null;
 
         // 日柱 当月一日与 1900/1/1 相差天数
         $dayCyclical = $this->dateDiff("{$year}-{$month}-01", '1900-01-01')->days + 10;
