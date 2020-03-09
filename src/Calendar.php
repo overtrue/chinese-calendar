@@ -218,22 +218,22 @@ class Calendar
      */
     public function solar($year, $month, $day, $hour = null)
     {
-        $date  = $this->makeDate("{$year}-{$month}-{$day}");
+        $date = $this->makeDate("{$year}-{$month}-{$day}");
         $lunar = $this->solar2lunar($year, $month, $day, $hour);
-        $week  = abs($date->format('w')); // 0 ~ 6 修正 星期七 为 星期日
+        $week = abs($date->format('w')); // 0 ~ 6 修正 星期七 为 星期日
 
         return array_merge(
             $lunar,
             [
-                'gregorian_year'  => (string)$year,
+                'gregorian_year' => (string) $year,
                 'gregorian_month' => sprintf('%02d', $month),
-                'gregorian_day'   => sprintf('%02d', $day),
-                'gregorian_hour'  => !is_numeric($hour) || $hour < 0 || $hour > 23 ? null : sprintf('%02d', $hour),
-                'week_no'         => $week, // 在周日时将会传回 0
-                'week_name'       => '星期' . $this->weekdayAlias[$week],
-                'is_today'        => 0 === $this->makeDate('now')->diff($date)->days,
-                'constellation'   => $this->toConstellation($month, $day),
-                'is_same_year'    => $lunar['lunar_year'] == $year ?: false,
+                'gregorian_day' => sprintf('%02d', $day),
+                'gregorian_hour' => !is_numeric($hour) || $hour < 0 || $hour > 23 ? null : sprintf('%02d', $hour),
+                'week_no' => $week, // 在周日时将会传回 0
+                'week_name' => '星期'.$this->weekdayAlias[$week],
+                'is_today' => 0 === $this->makeDate('now')->diff($date)->days,
+                'constellation' => $this->toConstellation($month, $day),
+                'is_same_year' => $lunar['lunar_year'] == $year ?: false,
             ]
         );
     }
@@ -241,11 +241,11 @@ class Calendar
     /**
      * 传入农历年月日以及传入的月份是否闰月获得详细的公历、农历信息.
      *
-     * @param int $year lunar year
-     * @param int $month lunar month
-     * @param int $day lunar day
+     * @param int  $year        lunar year
+     * @param int  $month       lunar month
+     * @param int  $day         lunar day
      * @param bool $isLeapMonth lunar month is leap or not.[如果是农历闰月第四个参数赋值true即可]
-     * @param int $hour birth hour.[0~23]
+     * @param int  $hour        birth hour.[0~23]
      *
      * @return array
      */
@@ -360,7 +360,7 @@ class Calendar
     /**
      * 农历年份转换为干支纪年.
      *
-     * @param int $lunarYear
+     * @param int      $lunarYear
      * @param null|int $termIndex
      *
      * @return string
@@ -379,7 +379,7 @@ class Calendar
         $ganKey = ($lunarYear + $adjust - 4) % 10;
         $zhiKey = ($lunarYear + $adjust - 4) % 12;
 
-        return $this->gan[$ganKey] . $this->zhi[$zhiKey];
+        return $this->gan[$ganKey].$this->zhi[$zhiKey];
     }
 
     /**
@@ -393,7 +393,7 @@ class Calendar
     public function toConstellation($gregorianMonth, $gregorianDay)
     {
         $constellations = '魔羯水瓶双鱼白羊金牛双子巨蟹狮子处女天秤天蝎射手魔羯';
-        $arr            = [20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22];
+        $arr = [20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22];
 
         return mb_substr(
             $constellations,
@@ -412,21 +412,21 @@ class Calendar
      */
     public function toGanZhi($offset)
     {
-        return $this->gan[$offset % 10] . $this->zhi[$offset % 12];
+        return $this->gan[$offset % 10].$this->zhi[$offset % 12];
     }
 
     /**
      * 传入公历年获得该年第n个节气的公历日期
      *
      * @param int $year 公历年(1900-2100)；
-     * @param int $no 二十四节气中的第几个节气(1~24)；从n=1(小寒)算起
+     * @param int $no   二十四节气中的第几个节气(1~24)；从n=1(小寒)算起
      *
      * @return int
+     *
      * @example
      * <pre>
      *  $_24 = $this->getTerm(1987,3) ;// _24 = 4; 意即 1987 年 2 月 4 日立春
      * </pre>
-     *
      */
     public function getTerm($year, $no)
     {
@@ -437,13 +437,13 @@ class Calendar
             return -1;
         }
         $solarTermsOfYear = array_map('hexdec', str_split($this->solarTerms[$year - 1900], 5));
-        $positions        = [
+        $positions = [
             0 => [0, 1],
             1 => [1, 2],
             2 => [3, 1],
             3 => [4, 2],
         ];
-        $group            = intval(($no - 1) / 4);
+        $group = intval(($no - 1) / 4);
         list($offset, $length) = $positions[($no - 1) % 4];
 
         return substr($solarTermsOfYear[$group], $offset, $length);
@@ -455,7 +455,7 @@ class Calendar
             throw new InvalidArgumentException("错误的年份:{$year}");
         }
         $lunarYear = '';
-        $year      = (string)$year;
+        $year = (string) $year;
         for ($i = 0, $l = strlen($year); $i < $l; ++$i) {
             $lunarYear .= '0' !== $year[$i] ? $this->weekdayAlias[$year[$i]] : '零';
         }
@@ -477,7 +477,7 @@ class Calendar
             throw new InvalidArgumentException("错误的月份:{$month}");
         }
 
-        return $this->monthAlias[abs($month) - 1] . '月';
+        return $this->monthAlias[abs($month) - 1].'月';
     }
 
     /**
@@ -497,7 +497,7 @@ class Calendar
             case 30:
                 return '三十';
             default:
-                return $this->dateAlias[intval($day / 10)] . $this->weekdayAlias[$day % 10];
+                return $this->dateAlias[intval($day / 10)].$this->weekdayAlias[$day % 10];
         }
     }
 
@@ -506,7 +506,7 @@ class Calendar
      *
      * 仅能大致转换, 精确划分生肖分界线是 “立春”.
      *
-     * @param int $year
+     * @param int      $year
      * @param null|int $termIndex
      *
      * @return string
@@ -566,7 +566,7 @@ class Calendar
         $wGan = $this->wuXing[array_search($gan, $this->gan)];
         $wZhi = $this->zhiWuxing[array_search($zhi, $this->zhi)];
 
-        return $wGan . $wZhi;
+        return $wGan.$wZhi;
     }
 
     /**
@@ -604,7 +604,7 @@ class Calendar
 
         for ($i = 1900; $i < 2101 && $offset > 0; ++$i) {
             $daysOfYear = $this->daysOfYear($i);
-            $offset     -= $daysOfYear;
+            $offset -= $daysOfYear;
         }
 
         if ($offset < 0) {
@@ -615,7 +615,7 @@ class Calendar
         // 农历年
         $lunarYear = $i;
 
-        $leap   = $this->leapMonth($i); // 闰哪个月
+        $leap = $this->leapMonth($i); // 闰哪个月
         $isLeap = false;
 
         // 用当年的天数 offset,逐个减去每月（农历）的天数，求出当天是本月的第几天
@@ -623,7 +623,7 @@ class Calendar
             // 闰月
             if ($leap > 0 && $i == ($leap + 1) && !$isLeap) {
                 --$i;
-                $isLeap      = true;
+                $isLeap = true;
                 $daysOfMonth = $this->leapDays($lunarYear); // 计算农历月天数
             } else {
                 $daysOfMonth = $this->lunarDays($lunarYear, $i); // 计算农历普通月天数
@@ -658,7 +658,7 @@ class Calendar
         $lunarDay = $offset + 1;
 
         // 月柱 1900 年 1 月小寒以前为 丙子月(60进制12)
-        $firstNode  = $this->getTerm($year, ($month * 2 - 1)); // 返回当月「节气」为几日开始
+        $firstNode = $this->getTerm($year, ($month * 2 - 1)); // 返回当月「节气」为几日开始
         $secondNode = $this->getTerm($year, ($month * 2)); // 返回当月「节气」为几日开始
 
         // 依据 12 节气修正干支月
@@ -683,7 +683,7 @@ class Calendar
         // 日柱 当月一日与 1900/1/1 相差天数
         $dayCyclical = $this->dateDiff("{$year}-{$month}-01", '1900-01-01')->days + 10;
         $dayCyclical += $day - 1;
-        $ganZhiDay   = $this->toGanZhi($dayCyclical);
+        $ganZhiDay = $this->toGanZhi($dayCyclical);
 
         // 时柱和时辰
         list($ganZhiHour, $lunarHour, $hour) = $this->ganZhiHour($hour, $dayCyclical);
@@ -691,38 +691,38 @@ class Calendar
         $ganZhiYear = $this->ganZhiYear($lunarYear, $termIndex);
 
         return [
-            'lunar_year'          => (string)$lunarYear,
-            'lunar_month'         => sprintf('%02d', $lunarMonth),
-            'lunar_day'           => sprintf('%02d', $lunarDay),
-            'lunar_hour'          => $hour,
-            'lunar_year_chinese'  => $this->toChinaYear($lunarYear),
-            'lunar_month_chinese' => ($isLeap ? '闰' : '') . $this->toChinaMonth($lunarMonth),
-            'lunar_day_chinese'   => $this->toChinaDay($lunarDay),
-            'lunar_hour_chinese'  => $lunarHour,
-            'ganzhi_year'         => $ganZhiYear,
-            'ganzhi_month'        => $ganZhiMonth,
-            'ganzhi_day'          => $ganZhiDay,
-            'ganzhi_hour'         => $ganZhiHour,
-            'wuxing_year'         => $this->getWuXing($ganZhiYear),
-            'wuxing_month'        => $this->getWuXing($ganZhiMonth),
-            'wuxing_day'          => $this->getWuXing($ganZhiDay),
-            'wuxing_hour'         => $this->getWuXing($ganZhiHour),
-            'color_year'          => $this->getColor($ganZhiYear),
-            'color_month'         => $this->getColor($ganZhiMonth),
-            'color_day'           => $this->getColor($ganZhiDay),
-            'color_hour'          => $this->getColor($ganZhiHour),
-            'animal'              => $this->getAnimal($lunarYear, $termIndex),
-            'term'                => $term,
-            'is_leap'             => $isLeap,
+            'lunar_year' => (string) $lunarYear,
+            'lunar_month' => sprintf('%02d', $lunarMonth),
+            'lunar_day' => sprintf('%02d', $lunarDay),
+            'lunar_hour' => $hour,
+            'lunar_year_chinese' => $this->toChinaYear($lunarYear),
+            'lunar_month_chinese' => ($isLeap ? '闰' : '').$this->toChinaMonth($lunarMonth),
+            'lunar_day_chinese' => $this->toChinaDay($lunarDay),
+            'lunar_hour_chinese' => $lunarHour,
+            'ganzhi_year' => $ganZhiYear,
+            'ganzhi_month' => $ganZhiMonth,
+            'ganzhi_day' => $ganZhiDay,
+            'ganzhi_hour' => $ganZhiHour,
+            'wuxing_year' => $this->getWuXing($ganZhiYear),
+            'wuxing_month' => $this->getWuXing($ganZhiMonth),
+            'wuxing_day' => $this->getWuXing($ganZhiDay),
+            'wuxing_hour' => $this->getWuXing($ganZhiHour),
+            'color_year' => $this->getColor($ganZhiYear),
+            'color_month' => $this->getColor($ganZhiMonth),
+            'color_day' => $this->getColor($ganZhiDay),
+            'color_hour' => $this->getColor($ganZhiHour),
+            'animal' => $this->getAnimal($lunarYear, $termIndex),
+            'term' => $term,
+            'is_leap' => $isLeap,
         ];
     }
 
     /**
      * 阴历转阳历.
      *
-     * @param int $year
-     * @param int $month
-     * @param int $day
+     * @param int  $year
+     * @param int  $month
+     * @param int  $day
      * @param bool $isLeapMonth
      *
      * @return array|int
@@ -767,7 +767,7 @@ class Calendar
             if (!$isAdd) {// 处理闰月
                 if ($leap <= $i && $leap > 0) {
                     $offset += $this->leapDays($year);
-                    $isAdd  = true;
+                    $isAdd = true;
                 }
             }
             $offset += $this->lunarDays($year, $i);
@@ -781,14 +781,14 @@ class Calendar
         // 1900 年农历正月一日的公历时间为 1900 年 1 月 30 日 0 时 0 分 0 秒 (该时间也是本农历的最开始起始点)
         // XXX: 部分 windows 机器不支持负时间戳，所以这里就写死了,哈哈哈哈...
         $startTimestamp = -2206483200;
-        $date           = date('Y-m-d', ($offset + $day) * 86400 + $startTimestamp);
+        $date = date('Y-m-d', ($offset + $day) * 86400 + $startTimestamp);
 
         list($solarYear, $solarMonth, $solarDay) = explode('-', $date);
 
         return [
-            'solar_year'  => $solarYear,
+            'solar_year' => $solarYear,
             'solar_month' => sprintf('%02d', $solarMonth),
-            'solar_day'   => sprintf('%02d', $solarDay),
+            'solar_day' => sprintf('%02d', $solarDay),
         ];
     }
 
@@ -818,7 +818,7 @@ class Calendar
      *
      * @param array $lunar1
      * @param array $lunar2
-     * @param bool $absolute
+     * @param bool  $absolute
      *
      * @return int
      */
@@ -826,20 +826,20 @@ class Calendar
     {
         $solar1 =
             $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
-        $date1  = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
+        $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
 
         $solar2 =
             $this->lunar2solar($lunar2['lunar_year'], $lunar2['lunar_month'], $lunar2['lunar_day'], $lunar2['is_leap']);
-        $date2  = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
+        $date2 = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
 
         if ($date1 < $date2) {
-            $lessLunar    = $lunar1;
+            $lessLunar = $lunar1;
             $greaterLunar = $lunar2;
-            $changed      = false;
+            $changed = false;
         } else {
-            $lessLunar    = $lunar2;
+            $lessLunar = $lunar2;
             $greaterLunar = $lunar1;
-            $changed      = true;
+            $changed = true;
         }
 
         $monthAdjustFactor = $greaterLunar['lunar_day'] >= $lessLunar['lunar_day'] ? 0 : 1;
@@ -851,7 +851,7 @@ class Calendar
             }
         }
         $yearAdjustFactor = $greaterLunar['lunar_month'] - $monthAdjustFactor >= $lessLunar['lunar_month'] ? 0 : 1;
-        $diff             = $greaterLunar['lunar_year'] - $yearAdjustFactor - $lessLunar['lunar_year'];
+        $diff = $greaterLunar['lunar_year'] - $yearAdjustFactor - $lessLunar['lunar_year'];
 
         return $absolute ? $diff : ($changed ? -1 * $diff : $diff);
     }
@@ -861,7 +861,7 @@ class Calendar
      *
      * @param array $lunar1
      * @param array $lunar2
-     * @param bool $absolute
+     * @param bool  $absolute
      *
      * @return int
      */
@@ -869,45 +869,45 @@ class Calendar
     {
         $solar1 =
             $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
-        $date1  = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
+        $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
 
         $solar2 =
             $this->lunar2solar($lunar2['lunar_year'], $lunar2['lunar_month'], $lunar2['lunar_day'], $lunar2['is_leap']);
-        $date2  = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
+        $date2 = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
 
         if ($date1 < $date2) {
-            $lessLunar    = $lunar1;
+            $lessLunar = $lunar1;
             $greaterLunar = $lunar2;
-            $changed      = false;
+            $changed = false;
         } else {
-            $lessLunar    = $lunar2;
+            $lessLunar = $lunar2;
             $greaterLunar = $lunar1;
-            $changed      = true;
+            $changed = true;
         }
 
         $diff = 0;
 
         if ($lessLunar['lunar_year'] == $greaterLunar['lunar_year']) {
-            $leapMonth                = $this->leapMonth($lessLunar['lunar_year']);
-            $lessLunarAdjustFactor    =
+            $leapMonth = $this->leapMonth($lessLunar['lunar_year']);
+            $lessLunarAdjustFactor =
                 $lessLunar['is_leap'] || (0 < $leapMonth && $leapMonth < $lessLunar['lunar_month']) ? 1 : 0;
             $greaterLunarAdjustFactor =
                 $greaterLunar['is_leap'] || (0 < $leapMonth && $leapMonth < $greaterLunar['lunar_month']) ? 1 : 0;
-            $diff                     =
+            $diff =
                 $greaterLunar['lunar_month'] + $greaterLunarAdjustFactor - $lessLunar['lunar_month'] - $lessLunarAdjustFactor;
         } else {
-            $lessLunarLeapMonth    = $this->leapMonth($lessLunar['lunar_year']);
+            $lessLunarLeapMonth = $this->leapMonth($lessLunar['lunar_year']);
             $greaterLunarLeapMonth = $this->leapMonth($greaterLunar['lunar_year']);
 
             $lessLunarAdjustFactor =
                 (!$lessLunar['is_leap'] && $lessLunarLeapMonth == $lessLunar['lunar_month']) || $lessLunarLeapMonth > $lessLunar['lunar_month'] ? 1 : 0;
-            $diff                  += 12 + $lessLunarAdjustFactor - $lessLunar['lunar_month'];
+            $diff += 12 + $lessLunarAdjustFactor - $lessLunar['lunar_month'];
             for ($i = $lessLunar['lunar_year'] + 1; $i < $greaterLunar['lunar_year']; ++$i) {
                 $diff += $this->monthsOfYear($i);
             }
             $greaterLunarAdjustFactor =
                 $greaterLunar['is_leap'] || (0 < $greaterLunarLeapMonth && $greaterLunarLeapMonth < $greaterLunar['lunar_month']) ? 1 : 0;
-            $diff                     += $greaterLunarAdjustFactor + $greaterLunar['lunar_month'];
+            $diff += $greaterLunarAdjustFactor + $greaterLunar['lunar_month'];
         }
 
         $diff -= $greaterLunar['lunar_day'] >= $lessLunar['lunar_day'] ? 0 : 1;
@@ -920,7 +920,7 @@ class Calendar
      *
      * @param array $lunar1
      * @param array $lunar2
-     * @param bool $absolute
+     * @param bool  $absolute
      *
      * @return int
      */
@@ -928,11 +928,11 @@ class Calendar
     {
         $solar1 =
             $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
-        $date1  = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
+        $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
 
         $solar2 =
             $this->lunar2solar($lunar2['lunar_year'], $lunar2['lunar_month'], $lunar2['lunar_day'], $lunar2['is_leap']);
-        $date2  = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
+        $date2 = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
 
         return $date1->diff($date2, $absolute)->format('%r%a');
     }
@@ -941,26 +941,26 @@ class Calendar
      * 增加年数.
      *
      * @param array $lunar
-     * @param int $value
-     * @param bool $overFlow
+     * @param int   $value
+     * @param bool  $overFlow
      *
      * @return array
      */
     public function addYears($lunar, $value = 1, $overFlow = true)
     {
-        $newYear      = $lunar['lunar_year'] + $value;
-        $newMonth     = $lunar['lunar_month'];
-        $newDay       = $lunar['lunar_day'];
-        $isLeap       = $lunar['is_leap'];
+        $newYear = $lunar['lunar_year'] + $value;
+        $newMonth = $lunar['lunar_month'];
+        $newDay = $lunar['lunar_day'];
+        $isLeap = $lunar['is_leap'];
         $needOverFlow = false;
 
         $leapMonth = $this->leapMonth($newYear);
-        $isLeap    = $isLeap && $newMonth == $leapMonth;
-        $maxDays   = $isLeap ? $this->leapDays($newYear) : $this->lunarDays($newYear, $newMonth);
+        $isLeap = $isLeap && $newMonth == $leapMonth;
+        $maxDays = $isLeap ? $this->leapDays($newYear) : $this->lunarDays($newYear, $newMonth);
 
         if ($newDay > $maxDays) {
             if ($overFlow) {
-                $newDay       = 1;
+                $newDay = 1;
                 $needOverFlow = true;
             } else {
                 $newDay = $maxDays;
@@ -978,8 +978,8 @@ class Calendar
      * 减少年数.
      *
      * @param array $lunar
-     * @param int $value
-     * @param bool $overFlow
+     * @param int   $value
+     * @param bool  $overFlow
      *
      * @return array
      */
@@ -992,8 +992,8 @@ class Calendar
      * 增加月数.
      *
      * @param array $lunar
-     * @param int $value
-     * @param bool $overFlow
+     * @param int   $value
+     * @param bool  $overFlow
      *
      * @return array
      */
@@ -1002,16 +1002,16 @@ class Calendar
         if (0 > $value) {
             return $this->subMonths($lunar, -1 * $value, $overFlow);
         } else {
-            $newYear  = $lunar['lunar_year'];
+            $newYear = $lunar['lunar_year'];
             $newMonth = $lunar['lunar_month'];
-            $newDay   = $lunar['lunar_day'];
-            $isLeap   = $lunar['is_leap'];
+            $newDay = $lunar['lunar_day'];
+            $isLeap = $lunar['is_leap'];
 
             while (0 < $value) {
                 $leapMonth = $this->leapMonth($newYear);
                 if (0 < $leapMonth) {
                     $currentIsLeap = $isLeap;
-                    $isLeap        = $newMonth + $value == $leapMonth + ($isLeap ? 0 : 1);
+                    $isLeap = $newMonth + $value == $leapMonth + ($isLeap ? 0 : 1);
 
                     if ((!$currentIsLeap && $leapMonth == $newMonth) || ($newMonth < $leapMonth && $newMonth + $value > $leapMonth)) {
                         --$value;
@@ -1022,7 +1022,7 @@ class Calendar
 
                 if (13 > $newMonth + $value) {
                     $newMonth += $value;
-                    $value    = 0;
+                    $value = 0;
                 } else {
                     $value = $value + $newMonth - 13;
                     ++$newYear;
@@ -1050,8 +1050,8 @@ class Calendar
      * 减少月数.
      *
      * @param array $lunar
-     * @param int $value
-     * @param bool $overFlow
+     * @param int   $value
+     * @param bool  $overFlow
      *
      * @return array
      */
@@ -1060,10 +1060,10 @@ class Calendar
         if (0 > $value) {
             return $this->addMonths($lunar, -1 * $value, $overFlow);
         } else {
-            $newYear      = $lunar['lunar_year'];
-            $newMonth     = $lunar['lunar_month'];
-            $newDay       = $lunar['lunar_day'];
-            $isLeap       = $lunar['is_leap'];
+            $newYear = $lunar['lunar_year'];
+            $newMonth = $lunar['lunar_month'];
+            $newDay = $lunar['lunar_day'];
+            $isLeap = $lunar['is_leap'];
             $needOverFlow = false;
 
             while (0 < $value) {
@@ -1081,7 +1081,7 @@ class Calendar
 
                 if ($newMonth > $value) {
                     $newMonth -= $value;
-                    $value    = 0;
+                    $value = 0;
                 } else {
                     $value = $value - $newMonth;
                     --$newYear;
@@ -1091,7 +1091,7 @@ class Calendar
                 if (0 == $value) {
                     $maxDays = $isLeap ? $this->leapDays($newYear) : $this->lunarDays($newYear, $newMonth);
                     if ($newDay > $maxDays) {
-                        $newDay       = $maxDays;
+                        $newDay = $maxDays;
                         $needOverFlow = $overFlow;
                     }
                 }
@@ -1110,7 +1110,7 @@ class Calendar
      * 增加天数.
      *
      * @param array $lunar
-     * @param int $value
+     * @param int   $value
      *
      * @return array
      */
@@ -1118,8 +1118,8 @@ class Calendar
     {
         $solar =
             $this->lunar2solar($lunar['lunar_year'], $lunar['lunar_month'], $lunar['lunar_day'], $lunar['is_leap']);
-        $date  = $this->makeDate("{$solar['solar_year']}-{$solar['solar_month']}-{$solar['solar_day']}");
-        $date->modify($value . ' day');
+        $date = $this->makeDate("{$solar['solar_year']}-{$solar['solar_month']}-{$solar['solar_day']}");
+        $date->modify($value.' day');
 
         return $this->solar2lunar($date->format('Y'), $date->format('m'), $date->format('d'));
     }
@@ -1128,7 +1128,7 @@ class Calendar
      * 减少天数.
      *
      * @param array $lunar
-     * @param int $value
+     * @param int   $value
      *
      * @return array
      */
@@ -1153,7 +1153,7 @@ class Calendar
     /**
      * 获取时柱.
      *
-     * @param int $hour 0~23 小时格式
+     * @param int $hour      0~23 小时格式
      * @param int $ganZhiDay 干支日期
      *
      * @return array
@@ -1170,8 +1170,8 @@ class Calendar
         $zhiHour = 12 === $zhiHour ? 0 : $zhiHour;
 
         return [
-            $this->gan[($ganZhiDay % 10 % 5 * 2 + $zhiHour) % 10] . $this->zhi[$zhiHour],
-            $this->zhi[$zhiHour] . '时',
+            $this->gan[($ganZhiDay % 10 % 5 * 2 + $zhiHour) % 10].$this->zhi[$zhiHour],
+            $this->zhi[$zhiHour].'时',
             sprintf('%02d', $hour),
         ];
     }
