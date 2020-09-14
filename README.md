@@ -13,6 +13,8 @@ $ composer require overtrue/chinese-calendar -vvv
 ```php
 use Overtrue\ChineseCalendar\Calendar;
 
+date_default_timezone_set('PRC'); 
+
 $calendar = new Calendar();
 
 $result = $calendar->solar(2017, 5, 5); // 阳历
