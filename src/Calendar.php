@@ -600,7 +600,8 @@ class Calendar
             throw new InvalidArgumentException("不支持的日期:{$year}-{$month}-{$day}");
         }
 
-        $offset = $this->dateDiff($date, '1900-01-31')->days;
+        // 用儒略日计算天数差，避免 PRC 时区 1986-1991 夏令时导致 diff 少算一天
+        $offset = gregoriantojd($month, $day, $year) - gregoriantojd(1, 31, 1900);
 
         for ($i = 1900; $i < 2101 && $offset > 0; ++$i) {
             $daysOfYear = $this->daysOfYear($i);
@@ -680,8 +681,8 @@ class Calendar
 
         $term = null !== $termIndex ? $this->solarTerm[$termIndex] : null;
 
-        // 日柱 当月一日与 1900/1/1 相差天数
-        $dayCyclical = $this->dateDiff("{$year}-{$month}-01", '1900-01-01')->days + 10;
+        // 日柱 当月一日与 1900/1/1 相差天数（用儒略日计算，避免夏令时影响）
+        $dayCyclical = gregoriantojd($month, 1, $year) - gregoriantojd(1, 1, 1900) + 10;
         $dayCyclical += $day - 1;
         $ganZhiDay = $this->toGanZhi($dayCyclical);
 
