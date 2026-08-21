@@ -5269,7 +5269,193 @@ class CalendarTest extends TestCase
 
     //endregion ganzhi_year & animal
 
+    //region data tables
+
+    public function testLunarMonthsMatchHongKongObservatoryTables()
+    {
+        $calendar = new Calendar();
+        $rows = $this->loadFixture('lunar-months-1901-2100.csv');
+
+        $this->assertGreaterThan(2400, count($rows));
+
+        foreach ($rows as list($firstDay, $lunarYear, $lunarMonth, $isLeap, $days)) {
+            list($year, $month, $day) = explode('-', $firstDay);
+            $isLeap = (bool) $isLeap;
+            $message = "{$firstDay} = 农历 {$lunarYear} 年".($isLeap ? '闰' : '')."{$lunarMonth} 月初一";
+
+            $lunar = $calendar->solar2lunar($year, $month, $day);
+            $this->assertSame($lunarYear, $lunar['lunar_year'], $message);
+            $this->assertSame(sprintf('%02d', $lunarMonth), $lunar['lunar_month'], $message);
+            $this->assertSame('01', $lunar['lunar_day'], $message);
+            $this->assertSame($isLeap, $lunar['is_leap'], $message);
+
+            $monthDays = $isLeap ? $calendar->leapDays($lunarYear) : $calendar->lunarDays($lunarYear, $lunarMonth);
+            $this->assertSame((int) $days, $monthDays, $message);
+
+            $solar = $calendar->lunar2solar($lunarYear, $lunarMonth, 1, $isLeap);
+            $this->assertSame($firstDay, "{$solar['solar_year']}-{$solar['solar_month']}-{$solar['solar_day']}", $message);
+        }
+    }
+
+    public function testSolarTermsMatchHongKongObservatoryTables()
+    {
+        $calendar = new Calendar();
+        $rows = $this->loadFixture('solar-terms-1901-2100.csv');
+        $names = [
+            '小寒', '大寒', '立春', '雨水', '惊蛰', '春分', '清明', '谷雨', '立夏', '小满', '芒种', '夏至',
+            '小暑', '大暑', '立秋', '处暑', '白露', '秋分', '寒露', '霜降', '立冬', '小雪', '大雪', '冬至',
+        ];
+
+        $this->assertSame(200, count($rows));
+
+        foreach ($rows as $row) {
+            $year = (int) array_shift($row);
+            $this->assertCount(24, $row, (string) $year);
+
+            foreach ($row as $index => $dayOfMonth) {
+                $no = $index + 1; // 1 = 小寒 … 24 = 冬至
+                $month = (int) (($no + 1) / 2); // 每月两个节气：小寒、大寒在 1 月，立春、雨水在 2 月……
+                $message = "{$year} 年 {$names[$index]}";
+
+                $this->assertSame((int) $dayOfMonth, (int) $calendar->getTerm($year, $no), $message);
+                $this->assertSame($names[$index], $calendar->solar2lunar($year, $month, $dayOfMonth)['term'], $message);
+            }
+        }
+    }
+
+    public function testLunarMonthLengthsOf1933()
+    {
+        $calendar = new Calendar();
+
+        // issue #46：1933 年闰五月为大月（30 天）、六月为小月（29 天），原数据 0x06e95 把两者写反了
+        $this->assertSame(5, $calendar->leapMonth(1933));
+        $this->assertSame(30, $calendar->leapDays(1933));
+        $this->assertSame(29, $calendar->lunarDays(1933, 6));
+        $this->assertSame(384, $calendar->daysOfYear(1933));
+
+        $lunar = $calendar->solar2lunar(1933, 7, 22);
+        $this->assertSame(['05', true, '30', '闰五月', '三十'], [
+            $lunar['lunar_month'], $lunar['is_leap'], $lunar['lunar_day'], $lunar['lunar_month_chinese'], $lunar['lunar_day_chinese'],
+        ]);
+
+        $lunar = $calendar->solar2lunar(1933, 7, 23);
+        $this->assertSame(['06', false, '01'], [$lunar['lunar_month'], $lunar['is_leap'], $lunar['lunar_day']]);
+
+        $lunar = $calendar->solar2lunar(1933, 8, 20);
+        $this->assertSame(['06', '29'], [$lunar['lunar_month'], $lunar['lunar_day']]);
+
+        $lunar = $calendar->solar2lunar(1933, 8, 21);
+        $this->assertSame(['07', '01'], [$lunar['lunar_month'], $lunar['lunar_day']]);
+
+        $this->assertSame(
+            ['solar_year' => '1933', 'solar_month' => '07', 'solar_day' => '22'],
+            $calendar->lunar2solar(1933, 5, 30, true)
+        );
+    }
+
+    public function testLunarMonthLengthsOf2060()
+    {
+        $calendar = new Calendar();
+
+        // 2060 年三月为小月（29 天）、四月为大月（30 天），原数据 0x0a2e0 把两者写反了
+        $this->assertSame(29, $calendar->lunarDays(2060, 3));
+        $this->assertSame(30, $calendar->lunarDays(2060, 4));
+        $this->assertSame(354, $calendar->daysOfYear(2060));
+
+        $cases = [
+            [2060, 4, 29, '03', '29'],
+            [2060, 4, 30, '04', '01'],
+            [2060, 5, 29, '04', '30'],
+            [2060, 5, 30, '05', '01'],
+        ];
+
+        foreach ($cases as list($year, $month, $day, $lunarMonth, $lunarDay)) {
+            $lunar = $calendar->solar2lunar($year, $month, $day);
+            $this->assertSame([$lunarMonth, $lunarDay], [$lunar['lunar_month'], $lunar['lunar_day']], "{$year}-{$month}-{$day}");
+        }
+
+        $this->assertSame(
+            ['solar_year' => '2060', 'solar_month' => '04', 'solar_day' => '30'],
+            $calendar->lunar2solar(2060, 4, 1)
+        );
+        $this->assertSame(
+            ['solar_year' => '2060', 'solar_month' => '05', 'solar_day' => '29'],
+            $calendar->lunar2solar(2060, 4, 30)
+        );
+    }
+
+    public function testLunarMonthLengthsOf2057FollowHongKongObservatory()
+    {
+        $calendar = new Calendar();
+
+        // 2057 年九月初一的新月发生在 2057-09-28 北京时间 23:59 左右，距午夜仅十余秒，各家算法有分歧；
+        // 本库采用香港天文台的结果：八月 29 天，九月初一为 2057-09-28，九月 30 天
+        $this->assertSame(29, $calendar->lunarDays(2057, 8));
+        $this->assertSame(30, $calendar->lunarDays(2057, 9));
+        $this->assertSame(354, $calendar->daysOfYear(2057));
+
+        $cases = [
+            [2057, 9, 27, '08', '29'],
+            [2057, 9, 28, '09', '01'],
+            [2057, 10, 27, '09', '30'],
+            [2057, 10, 28, '10', '01'],
+        ];
+
+        foreach ($cases as list($year, $month, $day, $lunarMonth, $lunarDay)) {
+            $lunar = $calendar->solar2lunar($year, $month, $day);
+            $this->assertSame([$lunarMonth, $lunarDay], [$lunar['lunar_month'], $lunar['lunar_day']], "{$year}-{$month}-{$day}");
+        }
+    }
+
+    //endregion data tables
+
+    //region ganzhi_day & ganzhi_hour
+
+    public function testEightCharactersDuringChinaDaylightSavingTime()
+    {
+        $calendar = new Calendar();
+
+        // issue #54：1991-08-21 处于中国夏令时期间，PHP < 8.1 上旧版日柱会少算一天（壬戌/丙午），正确为 癸亥/戊午
+        $solar = $calendar->solar(1991, 8, 21, 12);
+        $this->assertSame(
+            ['辛未', '丙申', '癸亥', '戊午'],
+            [$solar['ganzhi_year'], $solar['ganzhi_month'], $solar['ganzhi_day'], $solar['ganzhi_hour']]
+        );
+        $this->assertSame(['07', '12'], [$solar['lunar_month'], $solar['lunar_day']]);
+
+        $solar = $calendar->solar(1991, 8, 21, 0);
+        $this->assertSame(['癸亥', '壬子'], [$solar['ganzhi_day'], $solar['ganzhi_hour']]);
+
+        $solar = $calendar->solar(1986, 6, 1, 12);
+        $this->assertSame(
+            ['丙寅', '癸巳', '丙子', '甲午'],
+            [$solar['ganzhi_year'], $solar['ganzhi_month'], $solar['ganzhi_day'], $solar['ganzhi_hour']]
+        );
+    }
+
+    //endregion ganzhi_day & ganzhi_hour
+
     //region helpers
+
+    /**
+     * 读取 tests/fixtures 下的 CSV（忽略以 # 开头的注释行），返回按逗号切分后的行.
+     *
+     * @param string $name
+     *
+     * @return array
+     */
+    private function loadFixture($name)
+    {
+        $rows = [];
+
+        foreach (file(__DIR__.'/fixtures/'.$name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+            if ('#' !== $line[0]) {
+                $rows[] = explode(',', $line);
+            }
+        }
+
+        return $rows;
+    }
 
     /**
      * 在指定的默认时区下执行回调，结束后恢复原来的默认时区.
