@@ -21,6 +21,16 @@ use InvalidArgumentException;
 class Calendar
 {
     /**
+     * 1900-01-31（农历 1900 年正月初一，本历法的起点）的儒略日序数.
+     */
+    const JULIAN_DAY_1900_01_31 = 2415051;
+
+    /**
+     * 1900-01-01 的儒略日序数，日柱（干支日）的计算基准.
+     */
+    const JULIAN_DAY_1900_01_01 = 2415021;
+
+    /**
      * 农历 1900-2100 的润大小信息.
      *
      * @var array
@@ -600,8 +610,9 @@ class Calendar
             throw new InvalidArgumentException("不支持的日期:{$year}-{$month}-{$day}");
         }
 
-        // 用儒略日计算天数差，避免 PRC 时区 1986-1991 夏令时导致 diff 少算一天
-        $offset = gregoriantojd($month, $day, $year) - gregoriantojd(1, 31, 1900);
+        // 用儒略日序数计算天数差，不经过 DateTime::diff()：
+        // PHP < 8.1 在中国夏令时期间（1919、1940-1949、1986-1991）会少算一天，见 issue #52
+        $offset = $this->toJulianDay($year, $month, $day) - self::JULIAN_DAY_1900_01_31;
 
         for ($i = 1900; $i < 2101 && $offset > 0; ++$i) {
             $daysOfYear = $this->daysOfYear($i);
@@ -681,8 +692,8 @@ class Calendar
 
         $term = null !== $termIndex ? $this->solarTerm[$termIndex] : null;
 
-        // 日柱 当月一日与 1900/1/1 相差天数（用儒略日计算，避免夏令时影响）
-        $dayCyclical = gregoriantojd($month, 1, $year) - gregoriantojd(1, 1, 1900) + 10;
+        // 日柱 当月一日与 1900/1/1 相差天数（儒略日序数计算，不受时区与夏令时影响）
+        $dayCyclical = $this->toJulianDay($year, $month, 1) - self::JULIAN_DAY_1900_01_01 + 10;
         $dayCyclical += $day - 1;
         $ganZhiDay = $this->toGanZhi($dayCyclical);
 
@@ -812,6 +823,39 @@ class Calendar
         }
 
         return $date1->diff($date2);
+    }
+
+    /**
+     * 公历日期转儒略日序数.
+     *
+     * 纯整数运算，不依赖 ext/calendar 的 gregoriantojd()，也不经过 DateTime，
+     * 因此不受时区、夏令时以及 PHP 版本差异的影响.
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     *
+     * @return int
+     *
+     * @see https://en.wikipedia.org/wiki/Julian_day#Converting_Gregorian_calendar_date_to_Julian_Day_Number
+     */
+    protected function toJulianDay($year, $month, $day)
+    {
+        $year = (int) $year;
+        $month = (int) $month;
+        $day = (int) $day;
+
+        $a = (int) ((14 - $month) / 12);
+        $y = $year + 4800 - $a;
+        $m = $month + 12 * $a - 3;
+
+        return $day
+            + (int) ((153 * $m + 2) / 5)
+            + 365 * $y
+            + (int) ($y / 4)
+            - (int) ($y / 100)
+            + (int) ($y / 400)
+            - 32045;
     }
 
     /**

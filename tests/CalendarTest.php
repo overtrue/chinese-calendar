@@ -4988,24 +4988,20 @@ class CalendarTest extends TestCase
                         // 闰月之后是下一个普通月
                         $this->assertEquals($prev['lunar_month'] + 1, $lunar['lunar_month']);
                         $this->assertEquals(false, $lunar['is_leap']);
-                    }
-                    elseif ($prev['lunar_month'] == $leapMonth) {
+                    } elseif ($prev['lunar_month'] == $leapMonth) {
                         // 普通月之后紧跟该年的闰月
                         $this->assertEquals($prev['lunar_month'], $lunar['lunar_month']);
                         $this->assertEquals(true, $lunar['is_leap']);
-                    }
-                    elseif (12 == $prev['lunar_month']) {
+                    } elseif (12 == $prev['lunar_month']) {
                         $this->assertEquals($prev['lunar_year'] + 1, $lunar['lunar_year']);
                         $this->assertEquals(1, $lunar['lunar_month']);
                         $this->assertEquals(false, $lunar['is_leap']);
-                    }
-                    else {
+                    } else {
                         $this->assertEquals($prev['lunar_month'] + 1, $lunar['lunar_month']);
                         $this->assertEquals(false, $lunar['is_leap']);
                     }
                     $this->assertEquals(1, $lunar['lunar_day']);
-                }
-                else {
+                } else {
                     $this->assertEquals($prev['lunar_year'], $lunar['lunar_year']);
                     $this->assertEquals($prev['lunar_month'], $lunar['lunar_month']);
                     $this->assertEquals($prev['is_leap'], $lunar['is_leap']);

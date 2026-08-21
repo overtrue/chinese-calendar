@@ -13,7 +13,7 @@ $ composer require overtrue/chinese-calendar -vvv
 ```php
 use Overtrue\ChineseCalendar\Calendar;
 
-date_default_timezone_set('PRC'); 
+date_default_timezone_set('Asia/Shanghai');
 
 $calendar = new Calendar();
 
