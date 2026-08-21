@@ -13,8 +13,6 @@ $ composer require overtrue/chinese-calendar -vvv
 ```php
 use Overtrue\ChineseCalendar\Calendar;
 
-date_default_timezone_set('Asia/Shanghai');
-
 $calendar = new Calendar();
 
 $result = $calendar->solar(2017, 5, 5); // 阳历
@@ -80,6 +78,8 @@ array (
 ```
 
 > 你可能注意到，含时间的农历结果怎么是 `四月十一` 而不是 `四月初十`，具体见 #13
+
+> 所有计算固定按北京时间（`Asia/Shanghai`）进行，与进程的默认时区（`date_default_timezone_set()`）无关。
 
 更多 API 请查看源码。
 

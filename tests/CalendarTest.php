@@ -9,6 +9,7 @@ namespace Overtrue\ChineseCalendar\Tests;
 
 use DateTime;
 use DateTimeZone;
+use InvalidArgumentException;
 use Overtrue\ChineseCalendar\Calendar;
 use PHPUnit\Framework\TestCase;
 
@@ -4528,6 +4529,41 @@ class CalendarTest extends TestCase
         $this->assertEquals(9509, $diff2a);
     }
 
+    public function testDiffInDaysAcrossLocalMeanTimeAndDaylightSavingTime()
+    {
+        $calendar = new Calendar();
+
+        // 农历 1900 年正月初一 = 公历 1900-01-31，当时 Asia/Shanghai 还是 LMT +08:05:43；
+        // 农历 1986 年四月廿四 = 公历 1986-06-01，处于中国夏令时期间，相差 31532 天；
+        // 农历 1991 年三月初一 = 公历 1991-04-15，同样处于夏令时期间，相差 33311 天。
+        // PHP < 8.1 的 DateTime::diff()->days 在这种组合下会少算一天，见 issue #37 / #52
+        $lunar1 = $calendar->lunar(1900, 1, 1, false);
+        $lunar2 = $calendar->lunar(1986, 4, 24, false);
+        $lunar3 = $calendar->lunar(1991, 3, 1, false);
+
+        $this->assertSame(31532, $calendar->diffInDays($lunar1, $lunar2, false));
+        $this->assertSame(-31532, $calendar->diffInDays($lunar2, $lunar1, false));
+        $this->assertSame(31532, $calendar->diffInDays($lunar2, $lunar1));
+        $this->assertSame(33311, $calendar->diffInDays($lunar1, $lunar3, false));
+        $this->assertSame(1779, $calendar->diffInDays($lunar3, $lunar2));
+    }
+
+    public function testDiffInDaysIsIndependentOfDefaultTimezone()
+    {
+        $calendar = new Calendar();
+
+        foreach (['UTC', 'America/New_York', 'Pacific/Kiritimati'] as $timezone) {
+            $this->withDefaultTimezone($timezone, function () use ($calendar, $timezone) {
+                $lunar1 = $calendar->lunar(2018, 7, 18, false);
+                $lunar2 = $calendar->lunar(2044, 7, 18, true);
+
+                $this->assertSame(9509, $calendar->diffInDays($lunar1, $lunar2, false), $timezone);
+                $this->assertSame(-9509, $calendar->diffInDays($lunar2, $lunar1, false), $timezone);
+                $this->assertSame(0, $calendar->diffInDays($lunar1, $lunar1), $timezone);
+            });
+        }
+    }
+
     //endregion diffInDays
 
     //region addYears
@@ -5015,4 +5051,173 @@ class CalendarTest extends TestCase
     }
 
     //endregion solar2lunar
+
+    //region lunar2solar
+
+    public function testLunar2SolarFirstLunarMonthOf1900()
+    {
+        $calendar = new Calendar();
+
+        // 农历 1900 年正月初一是本历法的起点，对应公历 1900-01-31；该月为小月，共 29 天
+        $this->assertSame(
+            ['solar_year' => '1900', 'solar_month' => '01', 'solar_day' => '31'],
+            $calendar->lunar2solar(1900, 1, 1)
+        );
+        $this->assertSame(
+            ['solar_year' => '1900', 'solar_month' => '02', 'solar_day' => '28'],
+            $calendar->lunar2solar(1900, 1, 29)
+        );
+        $this->assertSame(
+            ['solar_year' => '1900', 'solar_month' => '03', 'solar_day' => '01'],
+            $calendar->lunar2solar(1900, 2, 1)
+        );
+
+        $lunar = $calendar->lunar(1900, 1, 1);
+        $this->assertSame('1900-01-31', "{$lunar['gregorian_year']}-{$lunar['gregorian_month']}-{$lunar['gregorian_day']}");
+        $this->assertSame('甲辰', $lunar['ganzhi_day']);
+
+        // 正月没有三十
+        $this->expectException(InvalidArgumentException::class);
+        $calendar->lunar2solar(1900, 1, 30);
+    }
+
+    public function testLunar2SolarUpperBound()
+    {
+        $calendar = new Calendar();
+
+        // 农历 2100 年腊月初一 = 公历 2100-12-31，是数据表的最后一天
+        $this->assertSame(
+            ['solar_year' => '2100', 'solar_month' => '12', 'solar_day' => '31'],
+            $calendar->lunar2solar(2100, 12, 1)
+        );
+        $this->assertSame(-1, $calendar->lunar2solar(2100, 12, 2));
+    }
+
+    public function testLunar2SolarIsIndependentOfDefaultTimezone()
+    {
+        $calendar = new Calendar();
+
+        $timezones = ['UTC', 'Asia/Shanghai', 'America/New_York', 'America/Los_Angeles', 'Pacific/Kiritimati', 'Pacific/Pago_Pago'];
+
+        foreach ($timezones as $timezone) {
+            $this->withDefaultTimezone($timezone, function () use ($calendar, $timezone) {
+                $this->assertSame(
+                    ['solar_year' => '2024', 'solar_month' => '02', 'solar_day' => '10'],
+                    $calendar->lunar2solar(2024, 1, 1),
+                    $timezone
+                );
+                $this->assertSame(
+                    ['solar_year' => '2017', 'solar_month' => '05', 'solar_day' => '05'],
+                    $calendar->lunar2solar(2017, 4, 10),
+                    $timezone
+                );
+                $this->assertSame(
+                    ['solar_year' => '2017', 'solar_month' => '07', 'solar_day' => '23'],
+                    $calendar->lunar2solar(2017, 6, 1, true),
+                    $timezone
+                );
+                $this->assertSame(
+                    ['solar_year' => '1900', 'solar_month' => '01', 'solar_day' => '31'],
+                    $calendar->lunar2solar(1900, 1, 1),
+                    $timezone
+                );
+                $this->assertSame(
+                    ['solar_year' => '2100', 'solar_month' => '12', 'solar_day' => '31'],
+                    $calendar->lunar2solar(2100, 12, 1),
+                    $timezone
+                );
+
+                // README 里的示例
+                $lunar = $calendar->lunar(2017, 4, 10);
+                $this->assertSame('2017-05-05', "{$lunar['gregorian_year']}-{$lunar['gregorian_month']}-{$lunar['gregorian_day']}", $timezone);
+                $this->assertSame('星期五', $lunar['week_name'], $timezone);
+                $this->assertSame('壬辰', $lunar['ganzhi_day'], $timezone);
+
+                $newLunar = $calendar->addDays($calendar->lunar(2020, 1, 1), 1);
+                $this->assertSame('01', $newLunar['lunar_month'], $timezone);
+                $this->assertSame('02', $newLunar['lunar_day'], $timezone);
+            });
+        }
+    }
+
+    public function testLunar2SolarRoundTripForEveryLunarMonth()
+    {
+        $calendar = new Calendar();
+
+        // 故意在一个与北京时间相差很大的默认时区下跑，确保结果与默认时区无关
+        $this->withDefaultTimezone('America/Los_Angeles', function () use ($calendar) {
+            for ($year = 1900; $year <= 2100; ++$year) {
+                $leapMonth = $calendar->leapMonth($year);
+
+                for ($month = 1; $month <= 12; ++$month) {
+                    foreach ([false, true] as $isLeap) {
+                        if ($isLeap && $month != $leapMonth) {
+                            continue;
+                        }
+
+                        $lastDay = $isLeap ? $calendar->leapDays($year) : $calendar->lunarDays($year, $month);
+                        // 农历 2100 年腊月只有初一在数据表范围内
+                        $days = (2100 == $year && 12 == $month) ? [1] : [1, $lastDay];
+
+                        foreach ($days as $day) {
+                            $message = sprintf('lunar %d-%d-%d leap=%d', $year, $month, $day, $isLeap);
+                            $solar = $calendar->lunar2solar($year, $month, $day, $isLeap);
+                            $lunar = $calendar->solar2lunar($solar['solar_year'], $solar['solar_month'], $solar['solar_day']);
+
+                            $this->assertSame((string) $year, $lunar['lunar_year'], $message);
+                            $this->assertSame(sprintf('%02d', $month), $lunar['lunar_month'], $message);
+                            $this->assertSame(sprintf('%02d', $day), $lunar['lunar_day'], $message);
+                            $this->assertSame($isLeap, $lunar['is_leap'], $message);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    //endregion lunar2solar
+
+    //region solar
+
+    public function testSolarIsTodayOnlyForToday()
+    {
+        $calendar = new Calendar();
+
+        // 「今天」以北京时间为准，且不受进程默认时区影响
+        $this->withDefaultTimezone('America/Los_Angeles', function () use ($calendar) {
+            $today = new DateTime('now', new DateTimeZone('Asia/Shanghai'));
+
+            foreach ([-1 => false, 0 => true, 1 => false] as $offset => $expected) {
+                $date = clone $today;
+                $date->modify("{$offset} day");
+
+                $solar = $calendar->solar($date->format('Y'), $date->format('n'), $date->format('j'));
+                $this->assertSame($expected, $solar['is_today'], "{$offset} day");
+            }
+        });
+    }
+
+    //endregion solar
+
+    //region helpers
+
+    /**
+     * 在指定的默认时区下执行回调，结束后恢复原来的默认时区.
+     *
+     * @param string   $timezone
+     * @param callable $callback
+     */
+    private function withDefaultTimezone($timezone, callable $callback)
+    {
+        $previous = date_default_timezone_get();
+        date_default_timezone_set($timezone);
+
+        try {
+            $callback();
+        } finally {
+            date_default_timezone_set($previous);
+        }
+    }
+
+    //endregion helpers
 }

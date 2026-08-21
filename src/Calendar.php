@@ -241,7 +241,7 @@ class Calendar
                 'gregorian_hour' => !is_numeric($hour) || $hour < 0 || $hour > 23 ? null : sprintf('%02d', $hour),
                 'week_no' => $week, // 在周日时将会传回 0
                 'week_name' => '星期'.$this->weekdayAlias[$week],
-                'is_today' => 0 === $this->makeDate('now')->diff($date)->days,
+                'is_today' => $this->makeDate('now')->format('Y-m-d') === $date->format('Y-m-d'),
                 'constellation' => $this->toConstellation($month, $day),
                 'is_same_year' => $lunar['lunar_year'] == $year ?: false,
             ]
@@ -741,7 +741,7 @@ class Calendar
      */
     public function lunar2solar($year, $month, $day, $isLeapMonth = false)
     {
-        // 参数区间 1900.1.3 1 ~2100.12.1
+        // 参数区间（农历）1900.1.1 ~ 2100.12.1，对应公历 1900-01-31 ~ 2100-12-31
         $leapMonth = $this->leapMonth($year);
 
         // 传参要求计算该闰月公历 但该年得出的闰月与传参的月份并不同
@@ -749,8 +749,8 @@ class Calendar
             $isLeapMonth = false;
         }
 
-        // 超出了最大极限值
-        if (2100 == $year && 12 == $month && $day > 1 || 1900 == $year && 1 == $month && $day < 31) {
+        // 超出了最大极限值：农历 2100 年腊月初一即公历 2100-12-31，再往后就超出数据表范围了
+        if (2100 == $year && 12 == $month && $day > 1) {
             return -1;
         }
 
@@ -790,15 +790,12 @@ class Calendar
             $offset += $days;
         }
 
-        // 1900 年农历正月一日的公历时间为 1900 年 1 月 30 日 0 时 0 分 0 秒 (该时间也是本农历的最开始起始点)
-        // XXX: 部分 windows 机器不支持负时间戳，所以这里就写死了,哈哈哈哈...
-        $startTimestamp = -2206483200;
-        $date = date('Y-m-d', ($offset + $day) * 86400 + $startTimestamp);
-
-        list($solarYear, $solarMonth, $solarDay) = explode('-', $date);
+        // 农历 1900 年正月初一即公历 1900-01-31（本历法的起始点），在它的儒略日序数上加天数差即得公历日期；
+        // 全程整数运算，不经过时间戳与 DateTime，因此与进程默认时区无关
+        list($solarYear, $solarMonth, $solarDay) = $this->fromJulianDay(self::JULIAN_DAY_1900_01_31 + $offset + $day - 1);
 
         return [
-            'solar_year' => $solarYear,
+            'solar_year' => (string) $solarYear,
             'solar_month' => sprintf('%02d', $solarMonth),
             'solar_day' => sprintf('%02d', $solarDay),
         ];
@@ -856,6 +853,33 @@ class Calendar
             - (int) ($y / 100)
             + (int) ($y / 400)
             - 32045;
+    }
+
+    /**
+     * 儒略日序数转公历日期.
+     *
+     * toJulianDay() 的逆运算，同样是纯整数运算.
+     *
+     * @param int $julianDay
+     *
+     * @return array [年, 月, 日]
+     *
+     * @see https://en.wikipedia.org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
+     */
+    protected function fromJulianDay($julianDay)
+    {
+        $a = (int) $julianDay + 32044;
+        $b = (int) ((4 * $a + 3) / 146097);
+        $c = $a - (int) (146097 * $b / 4);
+        $d = (int) ((4 * $c + 3) / 1461);
+        $e = $c - (int) (1461 * $d / 4);
+        $m = (int) ((5 * $e + 2) / 153);
+
+        $day = $e - (int) ((153 * $m + 2) / 5) + 1;
+        $month = $m + 3 - 12 * (int) ($m / 10);
+        $year = 100 * $b + $d - 4800 + (int) ($m / 10);
+
+        return [$year, $month, $day];
     }
 
     /**
@@ -973,13 +997,15 @@ class Calendar
     {
         $solar1 =
             $this->lunar2solar($lunar1['lunar_year'], $lunar1['lunar_month'], $lunar1['lunar_day'], $lunar1['is_leap']);
-        $date1 = $this->makeDate("{$solar1['solar_year']}-{$solar1['solar_month']}-{$solar1['solar_day']}");
-
         $solar2 =
             $this->lunar2solar($lunar2['lunar_year'], $lunar2['lunar_month'], $lunar2['lunar_day'], $lunar2['is_leap']);
-        $date2 = $this->makeDate("{$solar2['solar_year']}-{$solar2['solar_month']}-{$solar2['solar_day']}");
 
-        return $date1->diff($date2, $absolute)->format('%r%a');
+        // 用儒略日序数相减，不经过 DateTime::diff()：
+        // 后者在 PHP < 8.1 上对 1900 年（LMT +08:05:43）日期与夏令时日期做差会少算一天
+        $diff = $this->toJulianDay($solar2['solar_year'], $solar2['solar_month'], $solar2['solar_day'])
+            - $this->toJulianDay($solar1['solar_year'], $solar1['solar_month'], $solar1['solar_day']);
+
+        return $absolute ? abs($diff) : $diff;
     }
 
     /**
