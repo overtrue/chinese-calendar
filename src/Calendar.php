@@ -370,24 +370,20 @@ class Calendar
     /**
      * 农历年份转换为干支纪年.
      *
+     * 以农历正月初一为干支年的分界，与 lunar_year 保持一致（据维基百科干支词条：
+     * 『在西历新年后，华夏新年或干支历新年之前，则续用上一年之干支』）。
+     * 命理学中以立春为界的算法不在此处处理。
+     *
      * @param int      $lunarYear
-     * @param null|int $termIndex
+     * @param null|int $termIndex 已废弃，不再参与计算。早期版本会在小寒、大寒、立春当天把干支年加一，
+     *                            结果与任何一种分界约定都不符（见 issue #50）
      *
      * @return string
      */
     public function ganZhiYear($lunarYear, $termIndex = null)
     {
-        /**
-         * 据维基百科干支词条：『在西历新年后，华夏新年或干支历新年之前，则续用上一年之干支』
-         * 所以干支年份应该不需要根据节气校正，为免影响现有系统，此处暂时保留原有逻辑
-         * https://zh.wikipedia.org/wiki/%E5%B9%B2%E6%94%AF.
-         *
-         * 即使考虑节气，有的年份没有立春，有的年份有两个立春，此处逻辑仍不能处理该特殊情况
-         */
-        $adjust = null !== $termIndex && 3 > $termIndex ? 1 : 0;
-
-        $ganKey = ($lunarYear + $adjust - 4) % 10;
-        $zhiKey = ($lunarYear + $adjust - 4) % 12;
+        $ganKey = ($lunarYear - 4) % 10;
+        $zhiKey = ($lunarYear - 4) % 12;
 
         return $this->gan[$ganKey].$this->zhi[$zhiKey];
     }
@@ -512,23 +508,19 @@ class Calendar
     }
 
     /**
-     * 年份转生肖.
+     * 农历年份转生肖.
      *
-     * 仅能大致转换, 精确划分生肖分界线是 “立春”.
+     * 以农历正月初一为生肖的分界，与 lunar_year、ganzhi_year 保持一致；
+     * 命理学中以立春为界的算法不在此处处理。
      *
      * @param int      $year
-     * @param null|int $termIndex
+     * @param null|int $termIndex 已废弃，不再参与计算，详见 ganZhiYear()
      *
      * @return string
      */
     public function getAnimal($year, $termIndex = null)
     {
-        // 认为此逻辑不需要，详情参见 ganZhiYear 相关注释
-        $adjust = null !== $termIndex && 3 > $termIndex ? 1 : 0;
-
-        $animalIndex = ($year + $adjust - 4) % 12;
-
-        return $this->animals[$animalIndex];
+        return $this->animals[($year - 4) % 12];
     }
 
     /**
@@ -700,7 +692,7 @@ class Calendar
         // 时柱和时辰
         list($ganZhiHour, $lunarHour, $hour) = $this->ganZhiHour($hour, $dayCyclical);
 
-        $ganZhiYear = $this->ganZhiYear($lunarYear, $termIndex);
+        $ganZhiYear = $this->ganZhiYear($lunarYear);
 
         return [
             'lunar_year' => (string) $lunarYear,
@@ -723,7 +715,7 @@ class Calendar
             'color_month' => $this->getColor($ganZhiMonth),
             'color_day' => $this->getColor($ganZhiDay),
             'color_hour' => $this->getColor($ganZhiHour),
-            'animal' => $this->getAnimal($lunarYear, $termIndex),
+            'animal' => $this->getAnimal($lunarYear),
             'term' => $term,
             'is_leap' => $isLeap,
         ];

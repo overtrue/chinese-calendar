@@ -5199,6 +5199,76 @@ class CalendarTest extends TestCase
 
     //endregion solar
 
+    //region ganzhi_year & animal
+
+    public function testGanZhiYearAndAnimalAreNotShiftedOnSolarTermDays()
+    {
+        $calendar = new Calendar();
+
+        // 早期版本会在小寒、大寒、立春当天把干支年加一（issue #50），结果与任何分界约定都不符
+        $cases = [
+            [2022, 1, 20, '大寒', '辛丑', '牛'],
+            [2023, 2, 4, '立春', '癸卯', '兔'],
+            [2024, 1, 6, '小寒', '癸卯', '兔'],
+            [2025, 1, 5, '小寒', '甲辰', '龙'],
+            [2025, 1, 20, '大寒', '甲辰', '龙'],
+            [2025, 2, 3, '立春', '乙巳', '蛇'],
+            [2017, 2, 3, '立春', '丁酉', '鸡'],
+        ];
+
+        foreach ($cases as list($year, $month, $day, $term, $ganZhiYear, $animal)) {
+            $solar = $calendar->solar($year, $month, $day);
+            $message = "{$year}-{$month}-{$day}";
+
+            $this->assertSame($term, $solar['term'], $message);
+            $this->assertSame($ganZhiYear, $solar['ganzhi_year'], $message);
+            $this->assertSame($animal, $solar['animal'], $message);
+        }
+    }
+
+    public function testGanZhiYearAndAnimalFollowLunarNewYear()
+    {
+        $calendar = new Calendar();
+
+        // 2024 年立春（2 月 4 日）早于正月初一（2 月 10 日）：分界以正月初一为准，与 lunar_year 一致
+        $cases = [
+            [2024, 2, 4, '2023', '癸卯', '兔'],
+            [2024, 2, 9, '2023', '癸卯', '兔'],
+            [2024, 2, 10, '2024', '甲辰', '龙'],
+            [2018, 2, 4, '2017', '丁酉', '鸡'],
+            [2018, 2, 16, '2018', '戊戌', '狗'],
+        ];
+
+        foreach ($cases as list($year, $month, $day, $lunarYear, $ganZhiYear, $animal)) {
+            $solar = $calendar->solar($year, $month, $day);
+            $message = "{$year}-{$month}-{$day}";
+
+            $this->assertSame($lunarYear, $solar['lunar_year'], $message);
+            $this->assertSame($ganZhiYear, $solar['ganzhi_year'], $message);
+            $this->assertSame($animal, $solar['animal'], $message);
+        }
+    }
+
+    public function testGanZhiYearAndAnimalAreConsistentWithLunarYearEveryDay()
+    {
+        $calendar = new Calendar();
+
+        $date = new DateTime('2020-01-01', new DateTimeZone('UTC'));
+        $end = new DateTime('2026-01-01', new DateTimeZone('UTC'));
+
+        while ($date < $end) {
+            $solar = $calendar->solar2lunar($date->format('Y'), $date->format('n'), $date->format('j'));
+            $message = $date->format('Y-m-d');
+
+            $this->assertSame($calendar->ganZhiYear($solar['lunar_year']), $solar['ganzhi_year'], $message);
+            $this->assertSame($calendar->getAnimal($solar['lunar_year']), $solar['animal'], $message);
+
+            $date->modify('+1 day');
+        }
+    }
+
+    //endregion ganzhi_year & animal
+
     //region helpers
 
     /**
