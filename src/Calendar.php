@@ -1145,7 +1145,7 @@ class Calendar
      *
      * @return \DateTime
      */
-    protected function makeDate($string = 'now', $timezone = 'PRC')
+    protected function makeDate($string = 'now', $timezone = 'Asia/Shanghai')
     {
         return new DateTime($string, new DateTimeZone($timezone));
     }
