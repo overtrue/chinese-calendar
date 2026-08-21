@@ -7,6 +7,8 @@
 
 namespace Overtrue\ChineseCalendar\Tests;
 
+use DateTime;
+use DateTimeZone;
 use Overtrue\ChineseCalendar\Calendar;
 use PHPUnit\Framework\TestCase;
 
@@ -4908,4 +4910,113 @@ class CalendarTest extends TestCase
         $animal = $calendar->getAnimal(1983);
         $this->assertEquals('猪', $animal);
     }
+
+    //region solar2lunar
+
+    public function testSolar2LunarChinaDaylightSavingTimeStart1986()
+    {
+        $calendar = new Calendar();
+
+        // 1986 年中国夏令时自 5 月 4 日 02:00 开始（见 issue #52）
+        $this->assertEquals(25, $calendar->solar2lunar(1986, 5, 3)['lunar_day']);
+        $this->assertEquals(26, $calendar->solar2lunar(1986, 5, 4)['lunar_day']);
+        $this->assertEquals(27, $calendar->solar2lunar(1986, 5, 5)['lunar_day']);
+        $this->assertEquals(28, $calendar->solar2lunar(1986, 5, 6)['lunar_day']);
+    }
+
+    public function testSolar2LunarChinaDaylightSavingTimeEnd1986()
+    {
+        $calendar = new Calendar();
+
+        // 1986 年夏令时于 9 月 14 日 02:00 结束
+        $this->assertEquals(10, $calendar->solar2lunar(1986, 9, 13)['lunar_day']);
+        $this->assertEquals(11, $calendar->solar2lunar(1986, 9, 14)['lunar_day']);
+        $this->assertEquals(12, $calendar->solar2lunar(1986, 9, 15)['lunar_day']);
+        $this->assertEquals(13, $calendar->solar2lunar(1986, 9, 16)['lunar_day']);
+    }
+
+    public function testSolar2LunarChinaDaylightSavingTime1987()
+    {
+        $calendar = new Calendar();
+
+        // 1987 年夏令时自 4 月 12 日 02:00 开始，9 月 13 日 02:00 结束
+        $this->assertEquals(14, $calendar->solar2lunar(1987, 4, 11)['lunar_day']);
+        $this->assertEquals(15, $calendar->solar2lunar(1987, 4, 12)['lunar_day']);
+        $this->assertEquals(16, $calendar->solar2lunar(1987, 4, 13)['lunar_day']);
+        $this->assertEquals(17, $calendar->solar2lunar(1987, 4, 14)['lunar_day']);
+
+        $this->assertEquals(21, $calendar->solar2lunar(1987, 9, 13)['lunar_day']);
+        $this->assertEquals(22, $calendar->solar2lunar(1987, 9, 14)['lunar_day']);
+    }
+
+    public function testSolar2LunarChinaDaylightSavingTime1991()
+    {
+        $calendar = new Calendar();
+
+        // 1991 年夏令时自 4 月 14 日 02:00 开始，恰好跨过农历月末
+        $lunar = $calendar->solar2lunar(1991, 4, 14);
+        $this->assertEquals(2, $lunar['lunar_month']);
+        $this->assertEquals(30, $lunar['lunar_day']);
+
+        $lunar = $calendar->solar2lunar(1991, 4, 15);
+        $this->assertEquals(3, $lunar['lunar_month']);
+        $this->assertEquals(1, $lunar['lunar_day']);
+    }
+
+    public function testSolar2LunarDayContinuityDuringChinaDaylightSavingTime()
+    {
+        $calendar = new Calendar();
+
+        // 覆盖上海/中国历史上所有夏令时时期：1919、1940-1949、1986-1991
+        $date = new DateTime('1918-01-01', new DateTimeZone('UTC'));
+        $end = new DateTime('1993-01-01', new DateTimeZone('UTC'));
+
+        $prev = null;
+        while ($date < $end) {
+            $lunar = $calendar->solar2lunar($date->format('Y'), $date->format('n'), $date->format('j'));
+
+            if (null !== $prev) {
+                $maxDays = $prev['is_leap']
+                    ? $calendar->leapDays($prev['lunar_year'])
+                    : $calendar->lunarDays($prev['lunar_year'], $prev['lunar_month']);
+
+                if ($prev['lunar_day'] == $maxDays) {
+                    // 上一天是月末，今天应是下一个农历月的初一
+                    $leapMonth = $calendar->leapMonth($prev['lunar_year']);
+
+                    if ($prev['is_leap']) {
+                        // 闰月之后是下一个普通月
+                        $this->assertEquals($prev['lunar_month'] + 1, $lunar['lunar_month']);
+                        $this->assertEquals(false, $lunar['is_leap']);
+                    }
+                    elseif ($prev['lunar_month'] == $leapMonth) {
+                        // 普通月之后紧跟该年的闰月
+                        $this->assertEquals($prev['lunar_month'], $lunar['lunar_month']);
+                        $this->assertEquals(true, $lunar['is_leap']);
+                    }
+                    elseif (12 == $prev['lunar_month']) {
+                        $this->assertEquals($prev['lunar_year'] + 1, $lunar['lunar_year']);
+                        $this->assertEquals(1, $lunar['lunar_month']);
+                        $this->assertEquals(false, $lunar['is_leap']);
+                    }
+                    else {
+                        $this->assertEquals($prev['lunar_month'] + 1, $lunar['lunar_month']);
+                        $this->assertEquals(false, $lunar['is_leap']);
+                    }
+                    $this->assertEquals(1, $lunar['lunar_day']);
+                }
+                else {
+                    $this->assertEquals($prev['lunar_year'], $lunar['lunar_year']);
+                    $this->assertEquals($prev['lunar_month'], $lunar['lunar_month']);
+                    $this->assertEquals($prev['is_leap'], $lunar['is_leap']);
+                    $this->assertEquals($prev['lunar_day'] + 1, $lunar['lunar_day']);
+                }
+            }
+
+            $prev = $lunar;
+            $date->modify('+1 day');
+        }
+    }
+
+    //endregion solar2lunar
 }
