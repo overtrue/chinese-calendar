@@ -4,7 +4,7 @@
         "directories": ["src"]
     },
     "timeout": 30,
-    "minCoveredMsi": 88,
+    "minCoveredMsi": 92,
     "logs": {
         "text": "infection.log",
         "summary": "infection-summary.log"
