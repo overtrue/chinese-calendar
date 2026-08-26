@@ -23,7 +23,7 @@ jobs:
           ini-values: date.timezone=UTC
           coverage: pcov
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@v4
 
       - run: vendor/bin/infection --threads=max --no-progress --show-mutations
 
