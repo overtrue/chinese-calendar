@@ -56,6 +56,14 @@ array(
     'ganzhi_month' => '乙巳',            // (干支)月柱
     'ganzhi_day' => '壬辰',              // (干支)日柱
     'ganzhi_hour' => NULL,               // (干支)时柱
+    'wuxing_year' => '火金',             // (五行)年
+    'wuxing_month' => '木火',            // (五行)月
+    'wuxing_day' => '水土',              // (五行)日
+    'wuxing_hour' => NULL,               // (五行)时
+    'color_year' => '红',                // (颜色)年
+    'color_month' => '青',               // (颜色)月
+    'color_day' => '黑',                 // (颜色)日
+    'color_hour' => NULL,                // (颜色)时
     'animal' => '鸡',                    // 生肖
     'term' => '立夏',                    // 节气
     'is_leap' => false,                  // 是否为闰月
@@ -67,6 +75,7 @@ array(
     'week_name' => '星期五',             // (汉字)星期几
     'is_today' => false,                 // 是否为今天
     'constellation' => '金牛',           // 星座
+    'is_same_year' => true,              // 农历年与公历年是否同年
 );
 ```
 

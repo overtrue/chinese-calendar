@@ -684,6 +684,10 @@ class Calendar
     public function lunar2solar(int $year, int $month, int $day, bool $isLeapMonth = false): array|int
     {
         // 参数区间（农历）1900.1.1 ~ 2100.12.1，对应公历 1900-01-31 ~ 2100-12-31
+        if ($year < 1900 || $year > 2100) {
+            throw new InvalidArgumentException('传入的参数不合法');
+        }
+
         $leapMonth = $this->leapMonth($year);
 
         // 传参要求计算该闰月公历 但该年得出的闰月与传参的月份并不同
@@ -704,7 +708,7 @@ class Calendar
         }
 
         // 参数合法性效验
-        if ($year < 1900 || $year > 2100 || $day > $maxDays) {
+        if ($day < 1 || $day > $maxDays) {
             throw new InvalidArgumentException('传入的参数不合法');
         }
 

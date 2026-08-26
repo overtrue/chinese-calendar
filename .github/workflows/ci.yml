@@ -16,7 +16,7 @@ jobs:
         # 库的所有计算固定按 Asia/Shanghai 进行，测试矩阵覆盖多个默认时区以防回归
         timezone: ['UTC', 'Asia/Shanghai', 'America/New_York']
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -32,7 +32,7 @@ jobs:
     name: Code style (php-cs-fixer)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -42,14 +42,12 @@ jobs:
       - run: composer install --prefer-dist --no-progress --no-interaction
 
       - run: vendor/bin/php-cs-fixer fix --dry-run --diff
-        env:
-          PHP_CS_FIXER_IGNORE_ENV: 1
 
   phpstan:
     name: Static analysis (PHPStan)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: shivammathur/setup-php@v2
         with:

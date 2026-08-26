@@ -5095,6 +5095,30 @@ class CalendarTest extends TestCase
         $this->assertSame(-1, $calendar->lunar2solar(2100, 12, 2));
     }
 
+    public function testLunar2SolarRejectsInvalidInput()
+    {
+        $calendar = new Calendar();
+
+        // 年份越界、日期小于 1、月份越界都应干净地抛出异常（而不是带着 Warning 或算出错误结果）
+        $cases = [
+            [1899, 12, 1],
+            [2101, 1, 1],
+            [2024, 1, 0],
+            [2024, 1, -5],
+            [2024, 13, 1],
+            [2024, 0, 1],
+        ];
+
+        foreach ($cases as [$year, $month, $day]) {
+            try {
+                $calendar->lunar2solar($year, $month, $day);
+                $this->fail("lunar2solar({$year}, {$month}, {$day}) 应当抛出异常");
+            } catch (InvalidArgumentException $e) {
+                $this->assertSame('传入的参数不合法', $e->getMessage(), "{$year}-{$month}-{$day}");
+            }
+        }
+    }
+
     public function testLunar2SolarIsIndependentOfDefaultTimezone()
     {
         $calendar = new Calendar();
@@ -5323,6 +5347,22 @@ class CalendarTest extends TestCase
                 $this->assertSame($names[$index], $calendar->solar2lunar($year, $month, $dayOfMonth)['term'], $message);
             }
         }
+    }
+
+    public function testSolarTermsOf1900()
+    {
+        $calendar = new Calendar();
+
+        // 1900 年不在香港天文台对照表范围内（表从 1901 年起），此处按独立来源（6tail/lunar 逐日比对一致）固化
+        $expected = [6, 20, 4, 19, 6, 21, 5, 20, 6, 21, 6, 22, 7, 23, 8, 23, 8, 23, 9, 24, 8, 23, 7, 22];
+
+        foreach ($expected as $index => $dayOfMonth) {
+            $this->assertSame($dayOfMonth, $calendar->getTerm(1900, $index + 1), '1900 年第 '.($index + 1).' 个节气');
+        }
+
+        // 支持范围从 1900-01-31 起，立春（02-04）与雨水（02-19）都在范围内
+        $this->assertSame('立春', $calendar->solar2lunar(1900, 2, 4)['term']);
+        $this->assertSame('雨水', $calendar->solar2lunar(1900, 2, 19)['term']);
     }
 
     public function testLunarMonthLengthsOf1933()
