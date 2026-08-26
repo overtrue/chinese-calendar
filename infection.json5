@@ -4,11 +4,14 @@
         "directories": ["src"]
     },
     "timeout": 30,
+    "minCoveredMsi": 88,
     "logs": {
         "text": "infection.log",
         "summary": "infection-summary.log"
     },
     "mutators": {
-        "@default": true
+        "@default": true,
+        // 把 protected 放宽为 public 的变异无法通过行为测试探测，属于固有误报
+        "ProtectedVisibility": false
     }
 }

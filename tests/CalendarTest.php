@@ -5683,6 +5683,89 @@ final class CalendarTest extends TestCase
         $this->assertFalse($calendar->solar(2025, 1, 1)['is_same_year']);
     }
 
+    public function testSolarGoldenOutput(): void
+    {
+        // 完整钉住 README 示例的全部 32 个字段（含键序与取值类型），任何输出契约的变化都会在这里现形
+        $this->assertSame([
+            'lunar_year' => '2017',
+            'lunar_month' => '04',
+            'lunar_day' => '10',
+            'lunar_hour' => null,
+            'lunar_year_chinese' => '二零一七',
+            'lunar_month_chinese' => '四月',
+            'lunar_day_chinese' => '初十',
+            'lunar_hour_chinese' => null,
+            'ganzhi_year' => '丁酉',
+            'ganzhi_month' => '乙巳',
+            'ganzhi_day' => '壬辰',
+            'ganzhi_hour' => null,
+            'wuxing_year' => '火金',
+            'wuxing_month' => '木火',
+            'wuxing_day' => '水土',
+            'wuxing_hour' => null,
+            'color_year' => '红',
+            'color_month' => '青',
+            'color_day' => '黑',
+            'color_hour' => null,
+            'animal' => '鸡',
+            'term' => '立夏',
+            'is_leap' => false,
+            'gregorian_year' => '2017',
+            'gregorian_month' => '05',
+            'gregorian_day' => '05',
+            'gregorian_hour' => null,
+            'week_no' => 5,
+            'week_name' => '星期五',
+            'is_today' => false,
+            'constellation' => '金牛',
+            'is_same_year' => true,
+        ], (new Calendar())->solar(2017, 5, 5));
+    }
+
+    /**
+     * @return iterable<string, array{int, string, string, string}>
+     */
+    public static function ganZhiHourProvider(): iterable
+    {
+        // 五鼠遁：壬辰日（丁壬日起庚子），与 6tail/lunar 全部时辰比对一致
+        yield '0 点子时' => [0, '00', '庚子', '子时'];
+        yield '1 点丑时' => [1, '01', '辛丑', '丑时'];
+        yield '11 点午时' => [11, '11', '丙午', '午时'];
+        yield '12 点午时' => [12, '12', '丙午', '午时'];
+        yield '21 点亥时' => [21, '21', '辛亥', '亥时'];
+        yield '22 点亥时' => [22, '22', '辛亥', '亥时'];
+    }
+
+    #[DataProvider('ganZhiHourProvider')]
+    public function testGanZhiHourMapping(int $hour, string $gregorianHour, string $ganZhiHour, string $lunarHourChinese): void
+    {
+        $solar = (new Calendar())->solar(2017, 5, 5, $hour);
+
+        $this->assertSame($gregorianHour, $solar['gregorian_hour']);
+        $this->assertSame($ganZhiHour, $solar['ganzhi_hour']);
+        $this->assertSame($lunarHourChinese, $solar['lunar_hour_chinese']);
+        $this->assertSame($gregorianHour, $solar['lunar_hour']);
+    }
+
+    /**
+     * @return iterable<string, array{int}>
+     */
+    public static function outOfRangeHourProvider(): iterable
+    {
+        yield '负数' => [-1];
+        yield '24 点' => [24];
+        yield '99 点' => [99];
+    }
+
+    // 越界小时不参与计算：所有时辰相关字段为 null，其余字段与不传小时完全一致
+    #[DataProvider('outOfRangeHourProvider')]
+    public function testOutOfRangeHourYieldsNullHourFields(int $hour): void
+    {
+        $calendar = new Calendar();
+
+        $this->assertSame($calendar->solar(2017, 5, 5), $calendar->solar(2017, 5, 5, $hour));
+    }
+
     public function testSolar2LunarHour23RollsToNextDay(): void
     {
         $calendar = new Calendar();
