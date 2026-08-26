@@ -112,7 +112,7 @@ array(
 
 ```shell
 composer test        # PHPUnit（含香港天文台全量对照 fixture）
-composer check-style # php-cs-fixer --dry-run
+composer check-style # laravel/pint --test
 composer phpstan     # 静态分析
 ```
 

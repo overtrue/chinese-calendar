@@ -15,7 +15,7 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.95",
+        "laravel/pint": "^1.30",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.5"
     },
@@ -31,8 +31,8 @@
     },
     "scripts": {
         "test": "phpunit",
-        "check-style": "php-cs-fixer fix --dry-run --diff",
-        "fix-style": "php-cs-fixer fix",
+        "check-style": "pint --test",
+        "fix-style": "pint",
         "phpstan": "phpstan analyse"
     },
     "config": {

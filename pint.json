@@ -1,0 +1,23 @@
+{
+    "preset": "symfony",
+    "rules": {
+        "header_comment": {
+            "header": "This file is part of the overtrue/chinese-calendar.\n(c) overtrue <i@overtrue.me>\nThis source file is subject to the MIT license that is bundled\nwith this source code in the file LICENSE."
+        },
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "ordered_imports": true,
+        "no_useless_else": true,
+        "no_useless_return": true,
+        "no_superfluous_phpdoc_tags": false,
+        "global_namespace_import": {
+            "import_classes": true
+        },
+        "phpdoc_align": {
+            "align": "vertical"
+        },
+        "yoda_style": false,
+        "declare_strict_types": false
+    }
+}

@@ -29,7 +29,7 @@ jobs:
       - run: vendor/bin/phpunit
 
   code-style:
-    name: Code style (php-cs-fixer)
+    name: Code style (pint)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -41,7 +41,7 @@ jobs:
 
       - run: composer install --prefer-dist --no-progress --no-interaction
 
-      - run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      - run: vendor/bin/pint --test
 
   phpstan:
     name: Static analysis (PHPStan)
