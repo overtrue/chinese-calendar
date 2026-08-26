@@ -4,6 +4,11 @@
     "keywords": ["chinese", "calendar", "lunar", "solar", "solar2lunar", "lunar2solar"],
     "type": "library",
     "license": "MIT",
+    "homepage": "https://github.com/overtrue/chinese-calendar",
+    "support": {
+        "issues": "https://github.com/overtrue/chinese-calendar/issues",
+        "source": "https://github.com/overtrue/chinese-calendar"
+    },
     "authors": [
         {
             "name": "overtrue",
@@ -15,6 +20,7 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
+        "infection/infection": "^0.35.2",
         "laravel/pint": "^1.30",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.5"
@@ -36,7 +42,10 @@
         "phpstan": "phpstan analyse"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
     },
     "extra": {
         "branch-alias": {

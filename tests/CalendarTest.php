@@ -13,20 +13,23 @@ use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 use Overtrue\ChineseCalendar\Calendar;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class CalendarTest extends TestCase
+#[CoversClass(Calendar::class)]
+final class CalendarTest extends TestCase
 {
     // region ganZhiYear
 
-    public function testJiaZiGanZhiYear()
+    public function testJiaZiGanZhiYear(): void
     {
         $calendar = new Calendar();
         $ganZhi = $calendar->ganZhiYear(1984);
         $this->assertEquals('甲子', $ganZhi);
     }
 
-    public function testKuiHaiGanZhiYear()
+    public function testKuiHaiGanZhiYear(): void
     {
         $calendar = new Calendar();
         $ganZhi = $calendar->ganZhiYear(1983);
@@ -35,7 +38,7 @@ class CalendarTest extends TestCase
 
     // endregion ganZhiYear
 
-    public function testSameNormalDateDiffInYears()
+    public function testSameNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 29, false);
@@ -46,7 +49,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2);
     }
 
-    public function testSameLeapDateDiffInYears()
+    public function testSameLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 30, true);
@@ -59,7 +62,7 @@ class CalendarTest extends TestCase
 
     // region less month
 
-    public function testLessMonthLessDayNormalDateAndNormalDateDiffInYears()
+    public function testLessMonthLessDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -72,7 +75,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthLessDayNormalDateAndLeapDateDiffInYears()
+    public function testLessMonthLessDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2007, 5, 10, false);
@@ -85,7 +88,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthLessDayLeapDateAndNormalDateDiffInYears()
+    public function testLessMonthLessDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -98,7 +101,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthLessDayLeapDateAndLeapDateDiffInYears()
+    public function testLessMonthLessDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -111,7 +114,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(35, $diff2a);
     }
 
-    public function testLessMonthEqualDayNormalDateAndNormalDateDiffInYears()
+    public function testLessMonthEqualDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -124,7 +127,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthEqualDayNormalDateAndLeapDateDiffInYears()
+    public function testLessMonthEqualDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2007, 5, 10, false);
@@ -137,7 +140,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthEqualDayLeapDateAndNormalDateDiffInYears()
+    public function testLessMonthEqualDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -150,7 +153,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthEqualDayLeapDateAndLeapDateDiffInYears()
+    public function testLessMonthEqualDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -163,7 +166,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(35, $diff2a);
     }
 
-    public function testLessMonthGreaterDayNormalDateAndNormalDateDiffInYears()
+    public function testLessMonthGreaterDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -176,7 +179,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthGreaterDayNormalDateAndLeapDateDiffInYears()
+    public function testLessMonthGreaterDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2007, 5, 10, false);
@@ -189,7 +192,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthGreaterDayLeapDateAndNormalDateDiffInYears()
+    public function testLessMonthGreaterDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -202,7 +205,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testLessMonthGreaterDayLeapDateAndLeapDateDiffInYears()
+    public function testLessMonthGreaterDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -219,7 +222,7 @@ class CalendarTest extends TestCase
 
     // region equal month
 
-    public function testEqualMonthLessDayNormalDateAndNormalDateDiffInYears()
+    public function testEqualMonthLessDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -232,7 +235,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testEqualMonthLessDayNormalDateAndLeapDateDiffInYears()
+    public function testEqualMonthLessDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2007, 6, 10, false);
@@ -245,7 +248,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testEqualMonthLessDayLeapDateAndNormalDateDiffInYears()
+    public function testEqualMonthLessDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -258,7 +261,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testEqualMonthLessDayLeapDateAndLeapDateDiffInYears()
+    public function testEqualMonthLessDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -271,7 +274,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(8, $diff2a);
     }
 
-    public function testEqualMonthEqualDayNormalDateAndNormalDateDiffInYears()
+    public function testEqualMonthEqualDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -284,7 +287,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testEqualMonthEqualDayNormalDateAndLeapDateDiffInYears()
+    public function testEqualMonthEqualDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2007, 6, 10, false);
@@ -297,7 +300,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testEqualMonthEqualDayLeapDateAndNormalDateDiffInYears()
+    public function testEqualMonthEqualDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -310,7 +313,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testEqualMonthEqualDayLeapDateAndLeapDateDiffInYears()
+    public function testEqualMonthEqualDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -323,7 +326,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(8, $diff2a);
     }
 
-    public function testEqualMonthGreaterDayNormalDateAndNormalDateDiffInYears()
+    public function testEqualMonthGreaterDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -336,7 +339,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testEqualMonthGreaterDayNormalDateAndLeapDateDiffInYears()
+    public function testEqualMonthGreaterDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2007, 6, 10, false);
@@ -349,7 +352,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(10, $diff2a);
     }
 
-    public function testEqualMonthGreaterDayLeapDateAndNormalDateDiffInYears()
+    public function testEqualMonthGreaterDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -362,7 +365,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testEqualMonthGreaterDayLeapDateAndLeapDateDiffInYears()
+    public function testEqualMonthGreaterDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -379,7 +382,7 @@ class CalendarTest extends TestCase
 
     // region greater month
 
-    public function testGreaterMonthLessDayNormalDateAndNormalDateDiffInYears()
+    public function testGreaterMonthLessDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -392,7 +395,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthLessDayNormalDateAndLeapDateDiffInYears()
+    public function testGreaterMonthLessDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -405,7 +408,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthLessDayLeapDateAndNormalDateDiffInYears()
+    public function testGreaterMonthLessDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -418,7 +421,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthLessDayLeapDateAndLeapDateDiffInYears()
+    public function testGreaterMonthLessDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -431,7 +434,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    public function testGreaterMonthEqualDayNormalDateAndNormalDateDiffInYears()
+    public function testGreaterMonthEqualDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -444,7 +447,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthEqualDayNormalDateAndLeapDateDiffInYears()
+    public function testGreaterMonthEqualDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -457,7 +460,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthEqualDayLeapDateAndNormalDateDiffInYears()
+    public function testGreaterMonthEqualDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -470,7 +473,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthEqualDayLeapDateAndLeapDateDiffInYears()
+    public function testGreaterMonthEqualDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -483,7 +486,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    public function testGreaterMonthGreaterDayNormalDateAndNormalDateDiffInYears()
+    public function testGreaterMonthGreaterDayNormalDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -496,7 +499,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthGreaterDayNormalDateAndLeapDateDiffInYears()
+    public function testGreaterMonthGreaterDayNormalDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -509,7 +512,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthGreaterDayLeapDateAndNormalDateDiffInYears()
+    public function testGreaterMonthGreaterDayLeapDateAndNormalDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -522,7 +525,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9, $diff2a);
     }
 
-    public function testGreaterMonthGreaterDayLeapDateAndLeapDateDiffInYears()
+    public function testGreaterMonthGreaterDayLeapDateAndLeapDateDiffInYears(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -543,7 +546,7 @@ class CalendarTest extends TestCase
 
     // region different year less month less day
 
-    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -558,7 +561,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(105, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -573,7 +576,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(89, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -588,7 +591,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(90, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -603,7 +606,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(92, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -618,7 +621,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(91, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -633,7 +636,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(81, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -648,7 +651,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(65, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -663,7 +666,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(66, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -678,7 +681,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(68, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -693,7 +696,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(67, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -708,7 +711,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(79, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -723,7 +726,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -738,7 +741,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -753,7 +756,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(66, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -768,7 +771,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(65, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -783,7 +786,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(77, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -798,7 +801,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(61, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -813,7 +816,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -828,7 +831,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -843,7 +846,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -858,7 +861,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(78, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -873,7 +876,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -888,7 +891,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -903,7 +906,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(65, $diff2a);
     }
 
-    public function testDifferentYearLessMonthLessDayLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthLessDayLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -922,7 +925,7 @@ class CalendarTest extends TestCase
 
     // region different year less month equal day
 
-    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -937,7 +940,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(105, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -952,7 +955,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(89, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -967,7 +970,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(90, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -982,7 +985,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(92, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -997,7 +1000,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(91, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1012,7 +1015,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(81, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1027,7 +1030,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(65, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1042,7 +1045,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(66, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1057,7 +1060,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(68, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1072,7 +1075,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(67, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1087,7 +1090,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(79, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1102,7 +1105,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1117,7 +1120,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1132,7 +1135,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(66, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1147,7 +1150,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(65, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1162,7 +1165,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(77, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1177,7 +1180,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(61, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1192,7 +1195,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1207,7 +1210,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1222,7 +1225,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1237,7 +1240,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(78, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1252,7 +1255,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1267,7 +1270,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1282,7 +1285,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(65, $diff2a);
     }
 
-    public function testDifferentYearLessMonthEqualDayLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthEqualDayLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1301,7 +1304,7 @@ class CalendarTest extends TestCase
 
     // region different year less month greater day
 
-    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -1316,7 +1319,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(104, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -1331,7 +1334,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(88, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -1346,7 +1349,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(89, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -1361,7 +1364,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(91, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -1376,7 +1379,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(90, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1391,7 +1394,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(80, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1406,7 +1409,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1421,7 +1424,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(65, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1436,7 +1439,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(67, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1451,7 +1454,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(66, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1466,7 +1469,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(78, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1481,7 +1484,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1496,7 +1499,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1511,7 +1514,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(65, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, false);
@@ -1526,7 +1529,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1541,7 +1544,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(76, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1556,7 +1559,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(60, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1571,7 +1574,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(61, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1586,7 +1589,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(63, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1601,7 +1604,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1616,7 +1619,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(77, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1631,7 +1634,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(61, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1646,7 +1649,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1661,7 +1664,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(64, $diff2a);
     }
 
-    public function testDifferentYearLessMonthGreaterDayLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearLessMonthGreaterDayLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 4, 10, true);
@@ -1680,7 +1683,7 @@ class CalendarTest extends TestCase
 
     // region different year equal month less day
 
-    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -1695,7 +1698,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -1710,7 +1713,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -1725,7 +1728,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -1740,7 +1743,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(87, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -1755,7 +1758,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(87, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1770,7 +1773,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(75, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -1785,7 +1788,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -1800,7 +1803,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(136, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -1815,7 +1818,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(75, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -1830,7 +1833,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(137, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -1845,7 +1848,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(112, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -1860,7 +1863,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(198, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -1875,7 +1878,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -1890,7 +1893,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(137, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -1905,7 +1908,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(100, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1920,7 +1923,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(73, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1935,7 +1938,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(160, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1950,7 +1953,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(98, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1965,7 +1968,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(136, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -1980,7 +1983,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -1995,7 +1998,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(111, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2010,7 +2013,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(197, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2025,7 +2028,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(98, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2040,7 +2043,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(136, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthLessDayLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthLessDayLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2059,7 +2062,7 @@ class CalendarTest extends TestCase
 
     // region different year equal month equal day
 
-    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -2074,7 +2077,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -2089,7 +2092,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -2104,7 +2107,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -2119,7 +2122,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(87, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -2134,7 +2137,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(87, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -2149,7 +2152,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(75, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -2164,7 +2167,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(62, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2179,7 +2182,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(136, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2194,7 +2197,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(75, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2209,7 +2212,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(137, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2224,7 +2227,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(112, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2239,7 +2242,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(198, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2254,7 +2257,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2269,7 +2272,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(137, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2284,7 +2287,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(100, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2299,7 +2302,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(73, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2314,7 +2317,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(160, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2329,7 +2332,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(98, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2344,7 +2347,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(136, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2359,7 +2362,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2374,7 +2377,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(111, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2389,7 +2392,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(197, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2404,7 +2407,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(98, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2419,7 +2422,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(136, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthEqualDayLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthEqualDayLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2438,7 +2441,7 @@ class CalendarTest extends TestCase
 
     // region different year equal month greater day
 
-    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -2453,7 +2456,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(98, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -2468,7 +2471,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(85, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -2483,7 +2486,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(85, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -2498,7 +2501,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -2513,7 +2516,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -2528,7 +2531,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(74, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 2, 10, false);
@@ -2543,7 +2546,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(61, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2558,7 +2561,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(135, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2573,7 +2576,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(74, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2588,7 +2591,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(136, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2603,7 +2606,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(111, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2618,7 +2621,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(197, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2633,7 +2636,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(98, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2648,7 +2651,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(136, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2663,7 +2666,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(99, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2678,7 +2681,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(72, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2693,7 +2696,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(159, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2708,7 +2711,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(97, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2723,7 +2726,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(135, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 5, 10, false);
@@ -2738,7 +2741,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(98, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2753,7 +2756,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(110, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2768,7 +2771,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(196, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2783,7 +2786,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(97, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2798,7 +2801,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(135, $diff2a);
     }
 
-    public function testDifferentYearEqualMonthGreaterDayLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearEqualMonthGreaterDayLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -2817,7 +2820,7 @@ class CalendarTest extends TestCase
 
     // region different year greater month less day
 
-    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -2832,7 +2835,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(95, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -2847,7 +2850,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(82, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -2862,7 +2865,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(85, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 8, 10, false);
@@ -2877,7 +2880,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -2892,7 +2895,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 3, 10, false);
@@ -2907,7 +2910,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(74, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 3, 10, false);
@@ -2922,7 +2925,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(61, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2937,7 +2940,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(71, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2952,7 +2955,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(74, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -2967,7 +2970,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(72, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2982,7 +2985,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(111, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -2997,7 +3000,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(197, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3012,7 +3015,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(70, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3027,7 +3030,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(74, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3042,7 +3045,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(71, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3057,7 +3060,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(109, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3072,7 +3075,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(195, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3087,7 +3090,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(68, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3102,7 +3105,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(72, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3117,7 +3120,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(69, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3132,7 +3135,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(110, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3147,7 +3150,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(196, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3162,7 +3165,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(69, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3177,7 +3180,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(73, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthLessDayLeapYearLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3196,7 +3199,7 @@ class CalendarTest extends TestCase
 
     // region different year greater month equal day
 
-    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -3211,7 +3214,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(95, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -3226,7 +3229,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(82, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -3241,7 +3244,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(85, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 8, 10, false);
@@ -3256,7 +3259,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -3271,7 +3274,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(86, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 3, 10, false);
@@ -3286,7 +3289,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(74, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 3, 10, false);
@@ -3301,7 +3304,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(61, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -3316,7 +3319,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(71, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -3331,7 +3334,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(74, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -3346,7 +3349,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(72, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3361,7 +3364,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(111, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3376,7 +3379,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(197, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3391,7 +3394,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(70, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3406,7 +3409,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(74, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3421,7 +3424,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(71, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3436,7 +3439,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(109, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3451,7 +3454,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(195, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3466,7 +3469,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(68, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3481,7 +3484,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(72, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3496,7 +3499,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(69, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3511,7 +3514,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(110, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3526,7 +3529,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(196, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3541,7 +3544,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(69, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3556,7 +3559,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(73, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthEqualDayLeapYearLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3575,7 +3578,7 @@ class CalendarTest extends TestCase
 
     // region different year greater month greater day
 
-    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -3590,7 +3593,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(94, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 6, 10, false);
@@ -3605,7 +3608,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(81, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -3620,7 +3623,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(84, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 8, 10, false);
@@ -3635,7 +3638,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(85, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayNormalYearNormalDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 10, false);
@@ -3650,7 +3653,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(85, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 3, 10, false);
@@ -3665,7 +3668,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(73, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2020, 3, 10, false);
@@ -3680,7 +3683,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(60, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -3695,7 +3698,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(70, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -3710,7 +3713,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(73, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 5, 10, false);
@@ -3725,7 +3728,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(71, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3740,7 +3743,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(110, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3755,7 +3758,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(196, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3770,7 +3773,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(69, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3785,7 +3788,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(73, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, false);
@@ -3800,7 +3803,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(70, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3815,7 +3818,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(108, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3830,7 +3833,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(194, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3845,7 +3848,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(67, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3860,7 +3863,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(71, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 7, 10, false);
@@ -3875,7 +3878,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(68, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndNormalYearNormalDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndNormalYearNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3890,7 +3893,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(109, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndLeapYearNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3905,7 +3908,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(195, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndLeapYearNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3920,7 +3923,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(68, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndLeapYearNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3935,7 +3938,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(72, $diff2a);
     }
 
-    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndLeapDateDiffInMonths()
+    public function testDifferentYearGreaterMonthGreaterDayLeapYearLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2017, 6, 10, true);
@@ -3954,7 +3957,7 @@ class CalendarTest extends TestCase
 
     // region same year less month less day
 
-    public function testSameYearLessMonthLessDayNormalYearNormalDateAndNormalDateDiffInMonths()
+    public function testSameYearLessMonthLessDayNormalYearNormalDateAndNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -3969,7 +3972,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(6, $diff2a);
     }
 
-    public function testSameYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 2, 10, false);
@@ -3984,7 +3987,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalDateEqualLeapMonthDiffInMonths()
+    public function testSameYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 3, 10, false);
@@ -3999,7 +4002,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 5, 10, false);
@@ -4014,7 +4017,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testSameYearLessMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 4, 10, false);
@@ -4029,7 +4032,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, false);
@@ -4044,7 +4047,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 7, 10, false);
@@ -4059,7 +4062,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthLessDayLeapYearLeapDateAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthLessDayLeapYearLeapDateAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, true);
@@ -4078,7 +4081,7 @@ class CalendarTest extends TestCase
 
     // region same year less month equal day
 
-    public function testSameYearLessMonthEqualDayNormalYearNormalDateAndNormalDateDiffInMonths()
+    public function testSameYearLessMonthEqualDayNormalYearNormalDateAndNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -4093,7 +4096,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(6, $diff2a);
     }
 
-    public function testSameYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 2, 10, false);
@@ -4108,7 +4111,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalDateEqualLeapMonthDiffInMonths()
+    public function testSameYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 3, 10, false);
@@ -4123,7 +4126,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 5, 10, false);
@@ -4138,7 +4141,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testSameYearLessMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 4, 10, false);
@@ -4153,7 +4156,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, false);
@@ -4168,7 +4171,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 7, 10, false);
@@ -4183,7 +4186,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(3, $diff2a);
     }
 
-    public function testSameYearLessMonthEqualDayLeapYearLeapDateAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthEqualDayLeapYearLeapDateAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, true);
@@ -4202,7 +4205,7 @@ class CalendarTest extends TestCase
 
     // region same year less month greater day
 
-    public function testSameYearLessMonthGreaterDayNormalYearNormalDateAndNormalDateDiffInMonths()
+    public function testSameYearLessMonthGreaterDayNormalYearNormalDateAndNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 2, 10, false);
@@ -4217,7 +4220,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(5, $diff2a);
     }
 
-    public function testSameYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 2, 10, false);
@@ -4232,7 +4235,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    public function testSameYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalDateEqualLeapMonthDiffInMonths()
+    public function testSameYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 3, 10, false);
@@ -4247,7 +4250,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    public function testSameYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 5, 10, false);
@@ -4262,7 +4265,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    public function testSameYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testSameYearLessMonthGreaterDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 4, 10, false);
@@ -4277,7 +4280,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    public function testSameYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthGreaterDayLeapYearNormalDateEqualLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, false);
@@ -4292,7 +4295,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    public function testSameYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthGreaterDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 7, 10, false);
@@ -4307,7 +4310,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(2, $diff2a);
     }
 
-    public function testSameYearLessMonthGreaterDayLeapYearLeapDateAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearLessMonthGreaterDayLeapYearLeapDateAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, true);
@@ -4326,7 +4329,7 @@ class CalendarTest extends TestCase
 
     // region same year equal month less day
 
-    public function testSameYearEqualMonthLessDayNormalYearNormalDateAndNormalDateDiffInMonths()
+    public function testSameYearEqualMonthLessDayNormalYearNormalDateAndNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 8, 10, false);
@@ -4341,7 +4344,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    public function testSameYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths()
+    public function testSameYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 2, 10, false);
@@ -4356,7 +4359,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    public function testSameYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalDateEqualLeapMonthDiffInMonths()
+    public function testSameYearEqualMonthLessDayLeapYearNormalDateEqualLeapMonthAndNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, false);
@@ -4371,7 +4374,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    public function testSameYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearEqualMonthLessDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 8, 10, false);
@@ -4386,7 +4389,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    public function testSameYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testSameYearEqualMonthLessDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, false);
@@ -4401,7 +4404,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(1, $diff2a);
     }
 
-    public function testSameYearEqualMonthLessDayLeapDateAndLeapDateDiffInMonths()
+    public function testSameYearEqualMonthLessDayLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, true);
@@ -4420,7 +4423,7 @@ class CalendarTest extends TestCase
 
     // region same year equal month equal day
 
-    public function testSameYearEqualMonthEqualDayNormalYearNormalDateAndNormalDateDiffInMonths()
+    public function testSameYearEqualMonthEqualDayNormalYearNormalDateAndNormalDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 8, 10, false);
@@ -4435,7 +4438,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    public function testSameYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths()
+    public function testSameYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndNormalDateLessThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 2, 10, false);
@@ -4450,7 +4453,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    public function testSameYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalDateEqualLeapMonthDiffInMonths()
+    public function testSameYearEqualMonthEqualDayLeapYearNormalDateEqualLeapMonthAndNormalDateEqualLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, false);
@@ -4465,7 +4468,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    public function testSameYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths()
+    public function testSameYearEqualMonthEqualDayLeapYearNormalDateGreaterThanLeapMonthAndNormalDateGreaterThanLeapMonthDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 8, 10, false);
@@ -4480,7 +4483,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(0, $diff2a);
     }
 
-    public function testSameYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths()
+    public function testSameYearEqualMonthEqualDayLeapYearNormalDateLessThanLeapMonthAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, false);
@@ -4495,7 +4498,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(1, $diff2a);
     }
 
-    public function testSameYearEqualMonthEqualDayLeapDateAndLeapDateDiffInMonths()
+    public function testSameYearEqualMonthEqualDayLeapDateAndLeapDateDiffInMonths(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2025, 6, 10, true);
@@ -4516,7 +4519,7 @@ class CalendarTest extends TestCase
 
     // region diffInDays
 
-    public function testDiffInDays()
+    public function testDiffInDays(): void
     {
         $calendar = new Calendar();
         $lunar1 = $calendar->lunar(2018, 7, 18, false);
@@ -4531,7 +4534,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(9509, $diff2a);
     }
 
-    public function testDiffInDaysAcrossLocalMeanTimeAndDaylightSavingTime()
+    public function testDiffInDaysAcrossLocalMeanTimeAndDaylightSavingTime(): void
     {
         $calendar = new Calendar();
 
@@ -4550,7 +4553,7 @@ class CalendarTest extends TestCase
         $this->assertSame(1779, $calendar->diffInDays($lunar3, $lunar2));
     }
 
-    public function testDiffInDaysIsIndependentOfDefaultTimezone()
+    public function testDiffInDaysIsIndependentOfDefaultTimezone(): void
     {
         $calendar = new Calendar();
 
@@ -4570,7 +4573,7 @@ class CalendarTest extends TestCase
 
     // region addYears
 
-    public function testLastDayOfLeapMonthOverFlowAddYears()
+    public function testLastDayOfLeapMonthOverFlowAddYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4581,7 +4584,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthNotOverFlowAddYears()
+    public function testLastDayOfLeapMonthNotOverFlowAddYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4592,7 +4595,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfYearOverFlowAddYears()
+    public function testLastDayOfYearOverFlowAddYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2018, 12, 30, false);
@@ -4603,7 +4606,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfYearNotOverFlowAddYears()
+    public function testLastDayOfYearNotOverFlowAddYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2018, 12, 30, false);
@@ -4614,7 +4617,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLeapMonthAddYearsToLeapMonth()
+    public function testLeapMonthAddYearsToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(1998, 5, 29, true);
@@ -4625,7 +4628,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(true, $newLunar['is_leap']);
     }
 
-    public function testNormalMonthAddYearsToNormalMonth()
+    public function testNormalMonthAddYearsToNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(1998, 5, 29, false);
@@ -4640,7 +4643,7 @@ class CalendarTest extends TestCase
 
     // region subYears
 
-    public function testLastDayOfLeapMonthOverFlowSubYears()
+    public function testLastDayOfLeapMonthOverFlowSubYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4651,7 +4654,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthNotOverFlowSubYears()
+    public function testLastDayOfLeapMonthNotOverFlowSubYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4662,7 +4665,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfYearOverFlowSubYears()
+    public function testLastDayOfYearOverFlowSubYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2018, 12, 30, false);
@@ -4673,7 +4676,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfYearNotOverFlowSubYears()
+    public function testLastDayOfYearNotOverFlowSubYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2018, 12, 30, false);
@@ -4684,7 +4687,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLeapMonthSubYearsToLeapMonth()
+    public function testLeapMonthSubYearsToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2009, 5, 29, true);
@@ -4699,7 +4702,7 @@ class CalendarTest extends TestCase
 
     // region addMonths
 
-    public function testAddMonthsLesserThanLeapMonth()
+    public function testAddMonthsLesserThanLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 1, 1, false);
@@ -4710,7 +4713,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testNormalMonthAddMonthsToSameLeapMonth()
+    public function testNormalMonthAddMonthsToSameLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 29, false);
@@ -4721,7 +4724,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(true, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthOverFlowAddMonthsOverLeapMonthToLeapMonth()
+    public function testLastDayOfLeapMonthOverFlowAddMonthsOverLeapMonthToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4732,7 +4735,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthNotOverFlowAddMonthsOverLeapMonthToLeapMonth()
+    public function testLastDayOfLeapMonthNotOverFlowAddMonthsOverLeapMonthToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4743,7 +4746,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(true, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthOverFlowAddMonthsOverLeapMonthToNormalMonth()
+    public function testLastDayOfLeapMonthOverFlowAddMonthsOverLeapMonthToNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4754,7 +4757,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthNotOverFlowAddMonthsOverLeapMonthToNormalMonth()
+    public function testLastDayOfLeapMonthNotOverFlowAddMonthsOverLeapMonthToNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4765,7 +4768,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfNormalMonthOverFlowAddMonthsOverLeapMonthToLeapMonth()
+    public function testLastDayOfNormalMonthOverFlowAddMonthsOverLeapMonthToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 4, 30, false);
@@ -4776,7 +4779,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfNormalMonthNotOverFlowAddMonthsOverLeapMonthToLeapMonth()
+    public function testLastDayOfNormalMonthNotOverFlowAddMonthsOverLeapMonthToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 4, 30, false);
@@ -4787,7 +4790,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(true, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfNormalMonthOverFlowAddMonthsOverLeapMonthToNormalMonth()
+    public function testLastDayOfNormalMonthOverFlowAddMonthsOverLeapMonthToNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 4, 30, false);
@@ -4798,7 +4801,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfNormalMonthNotOverFlowAddMonthsOverLeapMonthToNormalMonth()
+    public function testLastDayOfNormalMonthNotOverFlowAddMonthsOverLeapMonthToNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 4, 30, false);
@@ -4813,7 +4816,7 @@ class CalendarTest extends TestCase
 
     // region subMonths
 
-    public function testSubMonthsGreaterThanLeapMonth()
+    public function testSubMonthsGreaterThanLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 9, 1, false);
@@ -4824,7 +4827,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLeapMonthSubMonthsToSameNormalMonth()
+    public function testLeapMonthSubMonthsToSameNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 29, true);
@@ -4835,7 +4838,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testSubMonthsToLeapMonth()
+    public function testSubMonthsToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 9, 1, false);
@@ -4846,7 +4849,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(true, $newLunar['is_leap']);
     }
 
-    public function testSubMonthsToNormalMonth()
+    public function testSubMonthsToNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 9, 1, false);
@@ -4857,7 +4860,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthOverFlowSubMonthsOverLeapMonthToLeapMonth()
+    public function testLastDayOfLeapMonthOverFlowSubMonthsOverLeapMonthToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4868,7 +4871,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthNotOverFlowSubMonthsOverLeapMonthToLeapMonth()
+    public function testLastDayOfLeapMonthNotOverFlowSubMonthsOverLeapMonthToLeapMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4879,7 +4882,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(true, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthOverFlowSubMonthsOverLeapMonthToNormalMonth()
+    public function testLastDayOfLeapMonthOverFlowSubMonthsOverLeapMonthToNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4890,7 +4893,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(false, $newLunar['is_leap']);
     }
 
-    public function testLastDayOfLeapMonthNotOverFlowSubMonthsOverLeapMonthToNormalMonth()
+    public function testLastDayOfLeapMonthNotOverFlowSubMonthsOverLeapMonthToNormalMonth(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2017, 6, 30, true);
@@ -4905,7 +4908,7 @@ class CalendarTest extends TestCase
 
     // region addDays
 
-    public function testAddDaysOverYears()
+    public function testAddDaysOverYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2018, 7, 11, false);
@@ -4920,7 +4923,7 @@ class CalendarTest extends TestCase
 
     // region subDays
 
-    public function testSubDaysOverYears()
+    public function testSubDaysOverYears(): void
     {
         $calendar = new Calendar();
         $lunar = $calendar->lunar(2031, 3, 29, true);
@@ -4935,14 +4938,14 @@ class CalendarTest extends TestCase
 
     // region getAnimal
 
-    public function testMouseGetAnimal()
+    public function testMouseGetAnimal(): void
     {
         $calendar = new Calendar();
         $animal = $calendar->getAnimal(1984);
         $this->assertEquals('鼠', $animal);
     }
 
-    public function testPigGetAnimal()
+    public function testPigGetAnimal(): void
     {
         $calendar = new Calendar();
         $animal = $calendar->getAnimal(1983);
@@ -4951,7 +4954,7 @@ class CalendarTest extends TestCase
 
     // region solar2lunar
 
-    public function testSolar2LunarChinaDaylightSavingTimeStart1986()
+    public function testSolar2LunarChinaDaylightSavingTimeStart1986(): void
     {
         $calendar = new Calendar();
 
@@ -4962,7 +4965,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(28, $calendar->solar2lunar(1986, 5, 6)['lunar_day']);
     }
 
-    public function testSolar2LunarChinaDaylightSavingTimeEnd1986()
+    public function testSolar2LunarChinaDaylightSavingTimeEnd1986(): void
     {
         $calendar = new Calendar();
 
@@ -4973,7 +4976,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(13, $calendar->solar2lunar(1986, 9, 16)['lunar_day']);
     }
 
-    public function testSolar2LunarChinaDaylightSavingTime1987()
+    public function testSolar2LunarChinaDaylightSavingTime1987(): void
     {
         $calendar = new Calendar();
 
@@ -4987,7 +4990,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(22, $calendar->solar2lunar(1987, 9, 14)['lunar_day']);
     }
 
-    public function testSolar2LunarChinaDaylightSavingTime1991()
+    public function testSolar2LunarChinaDaylightSavingTime1991(): void
     {
         $calendar = new Calendar();
 
@@ -5001,7 +5004,7 @@ class CalendarTest extends TestCase
         $this->assertEquals(1, $lunar['lunar_day']);
     }
 
-    public function testSolar2LunarDayContinuityDuringChinaDaylightSavingTime()
+    public function testSolar2LunarDayContinuityDuringChinaDaylightSavingTime(): void
     {
         $calendar = new Calendar();
 
@@ -5056,7 +5059,7 @@ class CalendarTest extends TestCase
 
     // region lunar2solar
 
-    public function testLunar2SolarFirstLunarMonthOf1900()
+    public function testLunar2SolarFirstLunarMonthOf1900(): void
     {
         $calendar = new Calendar();
 
@@ -5083,7 +5086,7 @@ class CalendarTest extends TestCase
         $calendar->lunar2solar(1900, 1, 30);
     }
 
-    public function testLunar2SolarUpperBound()
+    public function testLunar2SolarUpperBound(): void
     {
         $calendar = new Calendar();
 
@@ -5095,31 +5098,32 @@ class CalendarTest extends TestCase
         $this->assertSame(-1, $calendar->lunar2solar(2100, 12, 2));
     }
 
-    public function testLunar2SolarRejectsInvalidInput()
+    /**
+     * @return iterable<string, array{int, int, int}>
+     */
+    public static function invalidLunarDateProvider(): iterable
+    {
+        yield '年份下界之外' => [1899, 12, 1];
+        yield '年份上界之外' => [2101, 1, 1];
+        yield '日期为零' => [2024, 1, 0];
+        yield '日期为负' => [2024, 1, -5];
+        yield '月份大于 12' => [2024, 13, 1];
+        yield '月份为零' => [2024, 0, 1];
+    }
+
+    // 越界入参应干净地抛出异常，而不是带着 Warning 或算出错误结果
+    #[DataProvider('invalidLunarDateProvider')]
+    public function testLunar2SolarRejectsInvalidInput(int $year, int $month, int $day): void
     {
         $calendar = new Calendar();
 
-        // 年份越界、日期小于 1、月份越界都应干净地抛出异常（而不是带着 Warning 或算出错误结果）
-        $cases = [
-            [1899, 12, 1],
-            [2101, 1, 1],
-            [2024, 1, 0],
-            [2024, 1, -5],
-            [2024, 13, 1],
-            [2024, 0, 1],
-        ];
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('传入的参数不合法');
 
-        foreach ($cases as [$year, $month, $day]) {
-            try {
-                $calendar->lunar2solar($year, $month, $day);
-                $this->fail("lunar2solar({$year}, {$month}, {$day}) 应当抛出异常");
-            } catch (InvalidArgumentException $e) {
-                $this->assertSame('传入的参数不合法', $e->getMessage(), "{$year}-{$month}-{$day}");
-            }
-        }
+        $calendar->lunar2solar($year, $month, $day);
     }
 
-    public function testLunar2SolarIsIndependentOfDefaultTimezone()
+    public function testLunar2SolarIsIndependentOfDefaultTimezone(): void
     {
         $calendar = new Calendar();
 
@@ -5166,7 +5170,7 @@ class CalendarTest extends TestCase
         }
     }
 
-    public function testLunar2SolarRoundTripForEveryLunarMonth()
+    public function testLunar2SolarRoundTripForEveryLunarMonth(): void
     {
         $calendar = new Calendar();
 
@@ -5205,7 +5209,7 @@ class CalendarTest extends TestCase
 
     // region solar
 
-    public function testSolarIsTodayOnlyForToday()
+    public function testSolarIsTodayOnlyForToday(): void
     {
         $calendar = new Calendar();
 
@@ -5227,55 +5231,55 @@ class CalendarTest extends TestCase
 
     // region ganzhi_year & animal
 
-    public function testGanZhiYearAndAnimalAreNotShiftedOnSolarTermDays()
+    /**
+     * @return iterable<string, array{int, int, int, string, string, string}>
+     */
+    public static function solarTermDayGanZhiProvider(): iterable
     {
-        $calendar = new Calendar();
-
-        // 早期版本会在小寒、大寒、立春当天把干支年加一（issue #50），结果与任何分界约定都不符
-        $cases = [
-            [2022, 1, 20, '大寒', '辛丑', '牛'],
-            [2023, 2, 4, '立春', '癸卯', '兔'],
-            [2024, 1, 6, '小寒', '癸卯', '兔'],
-            [2025, 1, 5, '小寒', '甲辰', '龙'],
-            [2025, 1, 20, '大寒', '甲辰', '龙'],
-            [2025, 2, 3, '立春', '乙巳', '蛇'],
-            [2017, 2, 3, '立春', '丁酉', '鸡'],
-        ];
-
-        foreach ($cases as list($year, $month, $day, $term, $ganZhiYear, $animal)) {
-            $solar = $calendar->solar($year, $month, $day);
-            $message = "{$year}-{$month}-{$day}";
-
-            $this->assertSame($term, $solar['term'], $message);
-            $this->assertSame($ganZhiYear, $solar['ganzhi_year'], $message);
-            $this->assertSame($animal, $solar['animal'], $message);
-        }
+        yield '2022 大寒' => [2022, 1, 20, '大寒', '辛丑', '牛'];
+        yield '2023 立春' => [2023, 2, 4, '立春', '癸卯', '兔'];
+        yield '2024 小寒' => [2024, 1, 6, '小寒', '癸卯', '兔'];
+        yield '2025 小寒' => [2025, 1, 5, '小寒', '甲辰', '龙'];
+        yield '2025 大寒' => [2025, 1, 20, '大寒', '甲辰', '龙'];
+        yield '2025 立春' => [2025, 2, 3, '立春', '乙巳', '蛇'];
+        yield '2017 立春' => [2017, 2, 3, '立春', '丁酉', '鸡'];
     }
 
-    public function testGanZhiYearAndAnimalFollowLunarNewYear()
+    // 早期版本会在小寒、大寒、立春当天把干支年加一（issue #50），结果与任何分界约定都不符
+    #[DataProvider('solarTermDayGanZhiProvider')]
+    public function testGanZhiYearAndAnimalAreNotShiftedOnSolarTermDays(int $year, int $month, int $day, string $term, string $ganZhiYear, string $animal): void
     {
-        $calendar = new Calendar();
+        $solar = (new Calendar())->solar($year, $month, $day);
 
-        // 2024 年立春（2 月 4 日）早于正月初一（2 月 10 日）：分界以正月初一为准，与 lunar_year 一致
-        $cases = [
-            [2024, 2, 4, '2023', '癸卯', '兔'],
-            [2024, 2, 9, '2023', '癸卯', '兔'],
-            [2024, 2, 10, '2024', '甲辰', '龙'],
-            [2018, 2, 4, '2017', '丁酉', '鸡'],
-            [2018, 2, 16, '2018', '戊戌', '狗'],
-        ];
-
-        foreach ($cases as list($year, $month, $day, $lunarYear, $ganZhiYear, $animal)) {
-            $solar = $calendar->solar($year, $month, $day);
-            $message = "{$year}-{$month}-{$day}";
-
-            $this->assertSame($lunarYear, $solar['lunar_year'], $message);
-            $this->assertSame($ganZhiYear, $solar['ganzhi_year'], $message);
-            $this->assertSame($animal, $solar['animal'], $message);
-        }
+        $this->assertSame($term, $solar['term']);
+        $this->assertSame($ganZhiYear, $solar['ganzhi_year']);
+        $this->assertSame($animal, $solar['animal']);
     }
 
-    public function testGanZhiYearAndAnimalAreConsistentWithLunarYearEveryDay()
+    /**
+     * @return iterable<string, array{int, int, int, string, string, string}>
+     */
+    public static function lunarNewYearBoundaryProvider(): iterable
+    {
+        yield '2024 立春当天（正月初一之前）' => [2024, 2, 4, '2023', '癸卯', '兔'];
+        yield '2024 除夕' => [2024, 2, 9, '2023', '癸卯', '兔'];
+        yield '2024 正月初一' => [2024, 2, 10, '2024', '甲辰', '龙'];
+        yield '2018 立春当天（正月初一之前）' => [2018, 2, 4, '2017', '丁酉', '鸡'];
+        yield '2018 正月初一' => [2018, 2, 16, '2018', '戊戌', '狗'];
+    }
+
+    // 立春早于正月初一时，分界仍以正月初一为准，与 lunar_year 一致
+    #[DataProvider('lunarNewYearBoundaryProvider')]
+    public function testGanZhiYearAndAnimalFollowLunarNewYear(int $year, int $month, int $day, string $lunarYear, string $ganZhiYear, string $animal): void
+    {
+        $solar = (new Calendar())->solar($year, $month, $day);
+
+        $this->assertSame($lunarYear, $solar['lunar_year']);
+        $this->assertSame($ganZhiYear, $solar['ganzhi_year']);
+        $this->assertSame($animal, $solar['animal']);
+    }
+
+    public function testGanZhiYearAndAnimalAreConsistentWithLunarYearEveryDay(): void
     {
         $calendar = new Calendar();
 
@@ -5297,7 +5301,7 @@ class CalendarTest extends TestCase
 
     // region data tables
 
-    public function testLunarMonthsMatchHongKongObservatoryTables()
+    public function testLunarMonthsMatchHongKongObservatoryTables(): void
     {
         $calendar = new Calendar();
         $rows = $this->loadFixture('lunar-months-1901-2100.csv');
@@ -5323,7 +5327,7 @@ class CalendarTest extends TestCase
         }
     }
 
-    public function testSolarTermsMatchHongKongObservatoryTables()
+    public function testSolarTermsMatchHongKongObservatoryTables(): void
     {
         $calendar = new Calendar();
         $rows = $this->loadFixture('solar-terms-1901-2100.csv');
@@ -5349,7 +5353,7 @@ class CalendarTest extends TestCase
         }
     }
 
-    public function testSolarTermsOf1900()
+    public function testSolarTermsOf1900(): void
     {
         $calendar = new Calendar();
 
@@ -5365,7 +5369,7 @@ class CalendarTest extends TestCase
         $this->assertSame('雨水', $calendar->solar2lunar(1900, 2, 19)['term']);
     }
 
-    public function testLunarMonthLengthsOf1933()
+    public function testLunarMonthLengthsOf1933(): void
     {
         $calendar = new Calendar();
 
@@ -5395,7 +5399,7 @@ class CalendarTest extends TestCase
         );
     }
 
-    public function testLunarMonthLengthsOf2060()
+    public function testLunarMonthLengthsOf2060(): void
     {
         $calendar = new Calendar();
 
@@ -5426,7 +5430,7 @@ class CalendarTest extends TestCase
         );
     }
 
-    public function testLunarMonthLengthsOf2057FollowHongKongObservatory()
+    public function testLunarMonthLengthsOf2057FollowHongKongObservatory(): void
     {
         $calendar = new Calendar();
 
@@ -5453,7 +5457,7 @@ class CalendarTest extends TestCase
 
     // region ganzhi_day & ganzhi_hour
 
-    public function testEightCharactersDuringChinaDaylightSavingTime()
+    public function testEightCharactersDuringChinaDaylightSavingTime(): void
     {
         $calendar = new Calendar();
 
@@ -5477,6 +5481,210 @@ class CalendarTest extends TestCase
 
     // endregion ganzhi_day & ganzhi_hour
 
+    // region auxiliary methods
+
+    /**
+     * @return iterable<string, array{int, int, int}>
+     */
+    public static function solarDaysProvider(): iterable
+    {
+        yield '1900 年 2 月（整百非闰）' => [1900, 2, 28];
+        yield '2000 年 2 月（四百年闰）' => [2000, 2, 29];
+        yield '2100 年 2 月（整百非闰）' => [2100, 2, 28];
+        yield '2024 年 2 月（普通闰年）' => [2024, 2, 29];
+        yield '2023 年 2 月（平年）' => [2023, 2, 28];
+        yield '大月' => [2024, 1, 31];
+        yield '小月' => [2024, 4, 30];
+        yield '十二月' => [2024, 12, 31];
+        yield '月份为零返回 -1' => [2024, 0, -1];
+        yield '月份大于 12 返回 -1' => [2024, 13, -1];
+    }
+
+    #[DataProvider('solarDaysProvider')]
+    public function testSolarDays(int $year, int $month, int $expected): void
+    {
+        $this->assertSame($expected, (new Calendar())->solarDays($year, $month));
+    }
+
+    /**
+     * @return iterable<string, array{int, int, string}>
+     */
+    public static function constellationBoundaryProvider(): iterable
+    {
+        // 固化库内分界表（各类历书对个别分界日存在 ±1 天差异，此处以库内表为准）：
+        // 每月分界日前一天属上一星座，分界日当天起属下一星座
+        yield '1 月 19 日' => [1, 19, '魔羯'];
+        yield '1 月 20 日' => [1, 20, '水瓶'];
+        yield '2 月 18 日' => [2, 18, '水瓶'];
+        yield '2 月 19 日' => [2, 19, '双鱼'];
+        yield '3 月 20 日' => [3, 20, '双鱼'];
+        yield '3 月 21 日' => [3, 21, '白羊'];
+        yield '4 月 20 日' => [4, 20, '白羊'];
+        yield '4 月 21 日' => [4, 21, '金牛'];
+        yield '5 月 20 日' => [5, 20, '金牛'];
+        yield '5 月 21 日' => [5, 21, '双子'];
+        yield '6 月 21 日' => [6, 21, '双子'];
+        yield '6 月 22 日' => [6, 22, '巨蟹'];
+        yield '7 月 22 日' => [7, 22, '巨蟹'];
+        yield '7 月 23 日' => [7, 23, '狮子'];
+        yield '8 月 22 日' => [8, 22, '狮子'];
+        yield '8 月 23 日' => [8, 23, '处女'];
+        yield '9 月 22 日' => [9, 22, '处女'];
+        yield '9 月 23 日' => [9, 23, '天秤'];
+        yield '10 月 22 日' => [10, 22, '天秤'];
+        yield '10 月 23 日' => [10, 23, '天蝎'];
+        yield '11 月 21 日' => [11, 21, '天蝎'];
+        yield '11 月 22 日' => [11, 22, '射手'];
+        yield '12 月 21 日' => [12, 21, '射手'];
+        yield '12 月 22 日' => [12, 22, '魔羯'];
+    }
+
+    #[DataProvider('constellationBoundaryProvider')]
+    public function testToConstellationBoundaries(int $month, int $day, string $expected): void
+    {
+        $this->assertSame($expected, (new Calendar())->toConstellation($month, $day));
+    }
+
+    /**
+     * @return iterable<string, array{int, string}>
+     */
+    public static function chinaDayProvider(): iterable
+    {
+        yield '初一' => [1, '初一'];
+        yield '初二' => [2, '初二'];
+        yield '初十' => [10, '初十'];
+        yield '十一' => [11, '十一'];
+        yield '十九' => [19, '十九'];
+        yield '二十' => [20, '二十'];
+        yield '廿一' => [21, '廿一'];
+        yield '廿九' => [29, '廿九'];
+        yield '三十' => [30, '三十'];
+    }
+
+    #[DataProvider('chinaDayProvider')]
+    public function testToChinaDay(int $day, string $expected): void
+    {
+        $this->assertSame($expected, (new Calendar())->toChinaDay($day));
+    }
+
+    /**
+     * @return iterable<string, array{int, string}>
+     */
+    public static function chinaMonthProvider(): iterable
+    {
+        yield '正月' => [1, '正月'];
+        yield '二月' => [2, '二月'];
+        yield '九月' => [9, '九月'];
+        yield '十月' => [10, '十月'];
+        yield '冬月' => [11, '冬月'];
+        yield '腊月' => [12, '腊月'];
+    }
+
+    #[DataProvider('chinaMonthProvider')]
+    public function testToChinaMonth(int $month, string $expected): void
+    {
+        $this->assertSame($expected, (new Calendar())->toChinaMonth($month));
+    }
+
+    /**
+     * @return iterable<string, array{int}>
+     */
+    public static function invalidChinaMonthProvider(): iterable
+    {
+        yield '零' => [0];
+        yield '十三' => [13];
+        yield '负数' => [-1];
+    }
+
+    #[DataProvider('invalidChinaMonthProvider')]
+    public function testToChinaMonthRejectsInvalidMonth(int $month): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        (new Calendar())->toChinaMonth($month);
+    }
+
+    /**
+     * @return iterable<string, array{int, string}>
+     */
+    public static function chinaYearProvider(): iterable
+    {
+        yield '二零一七' => [2017, '二零一七'];
+        yield '含连续零' => [2005, '二零零五'];
+        yield '一九零零' => [1900, '一九零零'];
+        yield '二一零零' => [2100, '二一零零'];
+    }
+
+    #[DataProvider('chinaYearProvider')]
+    public function testToChinaYear(int $year, string $expected): void
+    {
+        $this->assertSame($expected, (new Calendar())->toChinaYear($year));
+    }
+
+    /**
+     * @return iterable<string, array{int, string}>
+     */
+    public static function ganZhiOffsetProvider(): iterable
+    {
+        yield '甲子（起点）' => [0, '甲子'];
+        yield '甲戌' => [10, '甲戌'];
+        yield '癸亥（一轮末位）' => [59, '癸亥'];
+        yield '甲子（六十循环）' => [60, '甲子'];
+        yield '乙丑' => [61, '乙丑'];
+    }
+
+    #[DataProvider('ganZhiOffsetProvider')]
+    public function testToGanZhi(int $offset, string $expected): void
+    {
+        $this->assertSame($expected, (new Calendar())->toGanZhi($offset));
+    }
+
+    /**
+     * @return iterable<string, array{int, int}>
+     */
+    public static function monthsOfYearProvider(): iterable
+    {
+        yield '1900 闰八月' => [1900, 13];
+        yield '2017 闰六月' => [2017, 13];
+        yield '2018 无闰月' => [2018, 12];
+        yield '2023 闰二月' => [2023, 13];
+        yield '2100 无闰月' => [2100, 12];
+    }
+
+    #[DataProvider('monthsOfYearProvider')]
+    public function testMonthsOfYear(int $year, int $expected): void
+    {
+        $this->assertSame($expected, (new Calendar())->monthsOfYear($year));
+    }
+
+    public function testDateDiff(): void
+    {
+        $calendar = new Calendar();
+
+        $interval = $calendar->dateDiff('2024-01-01', '2024-01-11');
+        $this->assertSame(10, $interval->days);
+        $this->assertSame(0, $interval->invert);
+
+        $interval = $calendar->dateDiff('2024-01-11', '2024-01-01');
+        $this->assertSame(10, $interval->days);
+        $this->assertSame(1, $interval->invert);
+
+        // 同时接受 DateTime 对象与字符串
+        $date = new DateTime('2024-01-01', new DateTimeZone('Asia/Shanghai'));
+        $this->assertSame(31, $calendar->dateDiff($date, '2024-02-01')->days);
+    }
+
+    public function testSolarReportsIsSameYear(): void
+    {
+        $calendar = new Calendar();
+
+        $this->assertTrue($calendar->solar(2017, 5, 5)['is_same_year']);
+        // 2025-01-01 仍处于农历 2024 年（甲辰年腊月）
+        $this->assertFalse($calendar->solar(2025, 1, 1)['is_same_year']);
+    }
+
+    // endregion auxiliary methods
+
     // region helpers
 
     /**
@@ -5486,7 +5694,7 @@ class CalendarTest extends TestCase
      *
      * @return array
      */
-    private function loadFixture($name)
+    private function loadFixture(string $name): array
     {
         $rows = [];
 
@@ -5505,7 +5713,7 @@ class CalendarTest extends TestCase
      * @param string   $timezone
      * @param callable $callback
      */
-    private function withDefaultTimezone($timezone, callable $callback)
+    private function withDefaultTimezone(string $timezone, callable $callback): void
     {
         $previous = date_default_timezone_get();
         date_default_timezone_set($timezone);

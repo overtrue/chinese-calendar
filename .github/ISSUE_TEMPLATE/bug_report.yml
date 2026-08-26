@@ -1,0 +1,42 @@
+name: Bug 报告
+description: 报告转换结果错误或其他缺陷
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: 库版本
+      placeholder: 例如 2.0.0 / 1.1.0
+    validations:
+      required: true
+  - type: input
+    id: php
+    attributes:
+      label: PHP 版本与运行环境
+      placeholder: 例如 PHP 8.5.9 / php:8.5-cli Docker 镜像
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现代码
+      description: 请提供可直接运行的最小代码片段
+      render: php
+      placeholder: |
+        $calendar = new Overtrue\ChineseCalendar\Calendar();
+        var_dump($calendar->solar(2025, 2, 3));
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果与依据
+      description: 期望的正确结果，以及对照来源（如香港天文台对照表、权威万年历的链接）
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+    validations:
+      required: true

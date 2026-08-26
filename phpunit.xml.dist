@@ -6,7 +6,8 @@
          executionOrder="depends,defects"
          colors="true"
          failOnRisky="true"
-         failOnWarning="true">
+         failOnWarning="true"
+         requireCoverageMetadata="true">
     <testsuites>
         <testsuite name="Test Suite">
             <directory>tests</directory>

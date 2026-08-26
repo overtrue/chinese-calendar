@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 使用疑问 / 讨论
+    url: https://github.com/overtrue/chinese-calendar/discussions
+    about: 非缺陷类的使用问题与讨论请移步 Discussions

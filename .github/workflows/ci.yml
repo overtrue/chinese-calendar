@@ -5,6 +5,13 @@ on:
     branches: [master, 1.x]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   phpunit:
     name: PHPUnit (PHP ${{ matrix.php }}, ${{ matrix.timezone }})
@@ -24,7 +31,49 @@ jobs:
           ini-values: date.timezone=${{ matrix.timezone }}
           coverage: none
 
-      - run: composer install --prefer-dist --no-progress --no-interaction
+      - run: composer validate --strict
+
+      - uses: ramsey/composer-install@v3
+
+      - run: vendor/bin/phpunit
+
+  coverage:
+    name: Coverage (pcov)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          ini-values: date.timezone=UTC
+          coverage: pcov
+
+      - uses: ramsey/composer-install@v3
+
+      - run: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-clover
+          path: coverage.clover
+
+  nightly:
+    name: PHPUnit (PHP 8.6 nightly, experimental)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.6'
+          ini-values: date.timezone=UTC
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+        with:
+          composer-options: --ignore-platform-req=php+
 
       - run: vendor/bin/phpunit
 
@@ -39,7 +88,7 @@ jobs:
           php-version: '8.5'
           coverage: none
 
-      - run: composer install --prefer-dist --no-progress --no-interaction
+      - uses: ramsey/composer-install@v3
 
       - run: vendor/bin/pint --test
 
@@ -54,6 +103,6 @@ jobs:
           php-version: '8.5'
           coverage: none
 
-      - run: composer install --prefer-dist --no-progress --no-interaction
+      - uses: ramsey/composer-install@v3
 
       - run: vendor/bin/phpstan analyse --no-progress

@@ -7,5 +7,8 @@
 .editorconfig export-ignore
 pint.json export-ignore
 phpstan.neon.dist export-ignore
+infection.json5 export-ignore
 AGENTS.md export-ignore
+CONTRIBUTING.md export-ignore
+SECURITY.md export-ignore
 phpunit.xml.dist export-ignore
