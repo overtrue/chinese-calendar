@@ -5683,6 +5683,118 @@ final class CalendarTest extends TestCase
         $this->assertFalse($calendar->solar(2025, 1, 1)['is_same_year']);
     }
 
+    public function testSolar2LunarHour23RollsToNextDay(): void
+    {
+        $calendar = new Calendar();
+
+        // 23 点按「晚子时」归入次日（见 #13 与 README）：农历日期与日柱、时柱整体后移
+        $lunar = $calendar->solar2lunar(2017, 5, 5, 23);
+        $this->assertSame('11', $lunar['lunar_day']);
+        $this->assertSame('十一', $lunar['lunar_day_chinese']);
+        $this->assertSame('癸巳', $lunar['ganzhi_day']);
+        $this->assertSame('壬子', $lunar['ganzhi_hour']);
+        $this->assertSame('子时', $lunar['lunar_hour_chinese']);
+        $this->assertSame('23', $lunar['lunar_hour']);
+
+        // 除时辰字段外，其余字段应与次日 0 点完全一致（含跨月、跨年）
+        foreach ([[2017, 5, 5, 2017, 5, 6], [2018, 5, 31, 2018, 6, 1], [2018, 12, 31, 2019, 1, 1], [2024, 2, 9, 2024, 2, 10]] as [$y, $m, $d, $ny, $nm, $nd]) {
+            $rolled = $calendar->solar2lunar($y, $m, $d, 23);
+            $nextDay = $calendar->solar2lunar($ny, $nm, $nd);
+            unset($rolled['lunar_hour'], $rolled['lunar_hour_chinese'], $rolled['ganzhi_hour'], $rolled['wuxing_hour'], $rolled['color_hour']);
+            unset($nextDay['lunar_hour'], $nextDay['lunar_hour_chinese'], $nextDay['ganzhi_hour'], $nextDay['wuxing_hour'], $nextDay['color_hour']);
+            $this->assertSame($nextDay, $rolled, "{$y}-{$m}-{$d} 23:00");
+        }
+
+        // 支持范围最后一天的 23 点会滚动到 2101 年，超出数据表范围
+        $this->expectException(InvalidArgumentException::class);
+        $calendar->solar2lunar(2100, 12, 31, 23);
+    }
+
+    /**
+     * @return iterable<string, array{int, int, int, string}>
+     */
+    public static function outOfRangeSolarDateProvider(): iterable
+    {
+        yield '1899 年' => [1899, 12, 31, '不支持的年份:1899'];
+        yield '2101 年' => [2101, 1, 1, '不支持的年份:2101'];
+        yield '起点之前' => [1900, 1, 30, '不支持的日期:1900-1-30'];
+    }
+
+    #[DataProvider('outOfRangeSolarDateProvider')]
+    public function testSolar2LunarRejectsOutOfRangeDates(int $year, int $month, int $day, string $message): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage($message);
+
+        (new Calendar())->solar2lunar($year, $month, $day);
+    }
+
+    public function testGetTermReturnsMinusOneForOutOfRangeInput(): void
+    {
+        $calendar = new Calendar();
+
+        $this->assertSame(-1, $calendar->getTerm(1899, 1));
+        $this->assertSame(-1, $calendar->getTerm(2101, 1));
+        $this->assertSame(-1, $calendar->getTerm(2024, 0));
+        $this->assertSame(-1, $calendar->getTerm(2024, 25));
+    }
+
+    public function testLunarThrowsBeyondUpperBound(): void
+    {
+        // lunar2solar() 对 2100 年腊月初二返回 -1，lunar() 应转换为异常而不是继续计算
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('传入的参数不合法');
+
+        (new Calendar())->lunar(2100, 12, 2);
+    }
+
+    public function testDiffInDaysRejectsOutOfRangeLunarArray(): void
+    {
+        $calendar = new Calendar();
+        $valid = $calendar->lunar(2024, 1, 1);
+        $outOfRange = ['lunar_year' => 2100, 'lunar_month' => 12, 'lunar_day' => 2, 'is_leap' => false];
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('传入的参数不合法');
+
+        $calendar->diffInDays($valid, $outOfRange);
+    }
+
+    public function testNegativeValuesDelegateBetweenAddAndSubMonths(): void
+    {
+        $calendar = new Calendar();
+        $lunar = $calendar->lunar(2017, 6, 10);
+
+        $this->assertSame($calendar->subMonths($lunar, 2), $calendar->addMonths($lunar, -2));
+        $this->assertSame($calendar->addMonths($lunar, 2), $calendar->subMonths($lunar, -2));
+    }
+
+    public function testColorAndWuXingGuardsForInvalidGanZhi(): void
+    {
+        // getColor()/getWuXing() 是 protected（本库支持子类覆盖字表做本地化），通过子类验证防御性守卫
+        $calendar = new class extends Calendar {
+            public function color(?string $ganZhi): ?string
+            {
+                return $this->getColor($ganZhi);
+            }
+
+            public function wuXing(?string $ganZhi): ?string
+            {
+                return $this->getWuXing($ganZhi);
+            }
+        };
+
+        $this->assertNull($calendar->color(null));
+        $this->assertNull($calendar->color(''));
+        $this->assertNull($calendar->color('不是干支'));
+        $this->assertNull($calendar->wuXing(null));
+        $this->assertNull($calendar->wuXing(''));
+        $this->assertNull($calendar->wuXing('不是干支'));
+
+        $this->assertSame('青', $calendar->color('甲子'));
+        $this->assertSame('木水', $calendar->wuXing('甲子'));
+    }
+
     // endregion auxiliary methods
 
     // region helpers
