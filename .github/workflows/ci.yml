@@ -33,7 +33,7 @@ jobs:
 
       - run: composer validate --strict
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@v4
 
       - run: vendor/bin/phpunit
 
@@ -49,7 +49,7 @@ jobs:
           ini-values: date.timezone=UTC
           coverage: pcov
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@v4
 
       - run: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
@@ -71,7 +71,7 @@ jobs:
           ini-values: date.timezone=UTC
           coverage: none
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@v4
         with:
           composer-options: --ignore-platform-req=php+
 
@@ -88,7 +88,7 @@ jobs:
           php-version: '8.5'
           coverage: none
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@v4
 
       - run: vendor/bin/pint --test
 
@@ -103,6 +103,6 @@ jobs:
           php-version: '8.5'
           coverage: none
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@v4
 
       - run: vendor/bin/phpstan analyse --no-progress
